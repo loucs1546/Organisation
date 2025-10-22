@@ -1,0 +1,1430 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ZENTYS | Organisation Criminelle</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root {
+      --black: #000000;
+      --white: #ffffff;
+      --dark: #0a0a0a;
+      --gray: #121212;
+      --light-gray: #1e1e1e;
+      --border: rgba(255,255,255,0.15);
+      --electric-blue: #00ffff;
+      --electric-glow: #00eaff;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+    }
+    body {
+      background-color: var(--dark);
+      color: var(--white);
+      overflow-x: hidden;
+      background-image: 
+        linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+        url('https://cdn.gamer-network.net/2020/articles/0000/80/80799/los-santos-gta-5.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+    header {
+      background: rgba(0, 0, 0, 0.92);
+      backdrop-filter: blur(10px);
+      padding: 1.2rem 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 3000;
+      border-bottom: 1px solid var(--border);
+    }
+    .logo {
+      font-size: 2.5rem;
+      font-weight: 800;
+      letter-spacing: 3px;
+      background: linear-gradient(90deg, #fff, #ccc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 12px rgba(255,255,255,0.4);
+      cursor: pointer;
+    }
+    nav a {
+      color: var(--white);
+      text-decoration: none;
+      margin-left: 1.8rem;
+      font-weight: 600;
+      position: relative;
+    }
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--white);
+      transition: width 0.3s ease;
+    }
+    nav a:hover::after {
+      width: 100%;
+    }
+    main {
+      margin-top: 80px;
+    }
+    section {
+      padding: 7rem 8%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 {
+      font-size: 4.2rem;
+      text-align: center;
+      margin-bottom: 2.5rem;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      background: linear-gradient(90deg, #ffffff, #bbbbbb);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 20px rgba(255,255,255,0.3);
+      animation: pulseGlow 3s infinite alternate;
+    }
+    @keyframes pulseGlow {
+      0% { text-shadow: 0 0 15px rgba(255,255,255,0.3); }
+      100% { text-shadow: 0 0 30px rgba(255,255,255,0.6), 0 0 40px rgba(255,255,255,0.4); }
+    }
+    h2 {
+      font-size: 2.4rem;
+      margin: 4rem 0 3rem;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      position: relative;
+      display: inline-block;
+      animation: glitch 3s infinite;
+    }
+    @keyframes glitch {
+      0% { filter: brightness(1); }
+      50% { filter: brightness(1.3) hue-rotate(5deg); }
+      100% { filter: brightness(1); }
+    }
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 3px;
+      background: linear-gradient(to right, transparent, #fff, transparent);
+    }
+
+    /* ====== HIÉRARCHIE EN DIAMANT ÉLECTRIQUE ====== */
+    .hierarchy-container {
+      position: relative;
+      width: 100%;
+      max-width: 800px;
+      margin: 3rem auto;
+      padding: 4rem 0;
+      height: 500px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .hierarchy-svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .hierarchy-node {
+      position: absolute;
+      background: rgba(20, 20, 20, 0.8);
+      border: 2px solid var(--electric-blue);
+      border-radius: 12px;
+      padding: 0.95rem 2.2rem;
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: var(--white);
+      box-shadow: 0 0 18px var(--electric-blue), 0 0 8px #fff2;
+      transition: all 0.3s ease;
+      text-shadow: 0 2px 6px var(--electric-blue);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      cursor: pointer;
+      backdrop-filter: blur(5px);
+      z-index: 2;
+    }
+    .hierarchy-node:hover {
+      box-shadow: 0 0 32px var(--electric-blue), 0 0 20px #fff5;
+      transform: scale(1.1) rotate(-2deg);
+      background: rgba(0, 255, 255, 0.1);
+      color: var(--electric-blue);
+      border-color: #fff;
+      text-shadow: 0 0 10px var(--electric-blue);
+    }
+    .leader       { top: 10%; left: 25%; }
+    .co-leader    { top: 10%; right: 25%; }
+    .frere-darme  { top: 39%; left: 10%; }
+    .braqueur     { top: 39%; right: 10%; }
+    .tueur        { bottom: 10%; left: 25%; }
+    .p-dessai     { bottom: 10%; right: 25%; }
+    .zentys-logo {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 3;
+      font-family: 'Brush Script MT', cursive;
+      font-size: 2.5rem;
+      font-weight: 600;
+      color: var(--white);
+      text-shadow: 0 0 34px var(--electric-blue), 0 0 12px #fff;
+      letter-spacing: 2px;
+      pointer-events: none;
+      user-select: none;
+      animation: electricPulse 2s infinite alternate;
+    }
+    @keyframes electricPulse {
+      0% { text-shadow: 0 0 20px var(--electric-blue), 0 0 8px #fff; }
+      100% { text-shadow: 0 0 40px var(--electric-blue), 0 0 16px #fff; }
+    }
+    .electric-line {
+      stroke: var(--electric-blue);
+      stroke-width: 3;
+      stroke-dasharray: 14,7,3,4;
+      filter: url(#electric-glow);
+      animation: electric 1.65s linear infinite;
+    }
+    @keyframes electric {
+      to { stroke-dashoffset: -40; }
+    }
+    .electric-glow {
+      filter: drop-shadow(0 0 8px var(--electric-blue)) drop-shadow(0 0 4px #fff);
+    }
+    .node-glow {
+      animation: nodeGlow 2s infinite alternate;
+    }
+    @keyframes nodeGlow {
+      0% { box-shadow: 0 0 15px var(--electric-blue); }
+      100% { box-shadow: 0 0 30px var(--electric-blue), 0 0 10px #fff; }
+    }
+
+    /* ====== GRILLES & SECTIONS ====== */
+    .grades-grid,
+    .roles-section .role-column,
+    .immat-full-grid,
+    .vehicles-grid,
+    .tenues-container {
+      width: 100%;
+      max-width: 1200px;
+    }
+    .grades-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.8rem;
+      margin-top: 2.5rem;
+    }
+    .grade-item {
+      background: var(--light-gray);
+      border-radius: 10px;
+      padding: 0.8rem 1.2rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.3rem;
+      transition: transform 0.3s;
+    }
+    .grade-item:hover { transform: translateY(-5px); }
+    .grade-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--white);
+      text-transform: uppercase;
+      text-align: center;
+      width: 100%;
+    }
+    .members-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+      justify-content: center;
+      width: 100%;
+    }
+    .member-item {
+      display: flex;
+      align-items: center;
+      gap: 0.2rem;
+      font-size: 0.9rem;
+      color: #aaa;
+      background: rgba(255,255,255,0.1);
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+    }
+    .immat-badge {
+      display: inline-block;
+      background: var(--white);
+      color: var(--black);
+      font-weight: bold;
+      padding: 0.1rem 0.3rem;
+      border-radius: 3px;
+      font-size: 0.8rem;
+    }
+
+    /* RÔLES */
+    .roles-section {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      margin-top: 2.5rem;
+    }
+    .role-column {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.8rem;
+    }
+    .role-item {
+      background: var(--light-gray);
+      border-radius: 10px;
+      padding: 0.8rem 1.2rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.3rem;
+      transition: transform 0.3s;
+    }
+    .role-item:hover { transform: translateY(-5px); }
+    .role-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--white);
+      text-transform: uppercase;
+    }
+    .role-details {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.9rem;
+      color: #aaa;
+      width: 100%;
+    }
+
+    /* IMMATRICULES */
+    .immat-full-section {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      margin-top: 2.5rem;
+    }
+    .immat-full-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.8rem;
+    }
+    .immat-full-item {
+      background: var(--light-gray);
+      border-radius: 10px;
+      padding: 1rem 1.5rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+      transition: transform 0.3s;
+    }
+    .immat-full-item:hover { transform: translateY(-5px); }
+    .immat-full-header {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    /* VÉHICULES */
+    .vehicles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 2.2rem;
+      margin-top: 2.5rem;
+    }
+    .vehicle-card {
+      background: var(--light-gray);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+      transition: transform 0.4s;
+    }
+    .vehicle-card:hover {
+      transform: translateY(-12px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.8), 0 0 20px rgba(255,255,255,0.1);
+    }
+    .vehicle-card img {
+      width: 100%;
+      height: 130px;
+      object-fit: cover;
+      border-bottom: 2px solid var(--white);
+    }
+    .vehicle-card h4 {
+      padding: 0.9rem 0.8rem 0.5rem;
+      font-size: 1.15rem;
+    }
+
+    /* TENUES */
+    .tenues-section {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      margin-top: 2.5rem;
+    }
+    .tenues-container {
+      display: flex;
+      gap: 5rem;
+      width: 100%;
+      justify-content: center;
+    }
+    .tenue-column {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      max-width: 300px;
+    }
+    .tenue-category {
+      background: var(--light-gray);
+      border-radius: 10px;
+      padding: 0.8rem 1.2rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+      transition: transform 0.3s;
+    }
+    .tenue-category:hover { transform: translateY(-5px); }
+    .tenue-category-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--white);
+      text-transform: uppercase;
+      width: 100%;
+      text-align: center;
+    }
+    .tenue-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+      width: 100%;
+      font-size: 0.9rem;
+      color: #aaa;
+      padding: 0.3rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .tenue-item:last-child { border-bottom: none; }
+    .tenue-info {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+    .tenue-label {
+      font-weight: 600;
+      min-width: 70px;
+    }
+    .tenue-value {
+      background: rgba(255,255,255,0.1);
+      color: var(--white);
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      min-width: 30px;
+      text-align: center;
+    }
+    .tenue-note {
+      font-style: italic;
+      font-size: 0.8rem;
+      color: #888;
+      margin-top: 0.3rem;
+      width: 100%;
+      text-align: center;
+    }
+
+    /* ====== CONTACT + MODALE TICKET ====== */
+    .contact-section {
+      text-align: center;
+      margin-top: 2.5rem;
+      max-width: 700px;
+    }
+    .discord-btn {
+      background: #5865F2;
+      color: white;
+      border: none;
+      padding: 1rem 2.2rem;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 1.25rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin: 1rem 0;
+      transition: all 0.3s;
+    }
+    .discord-btn:hover {
+      background: #4752c4;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(88,101,242,0.5);
+    }
+
+    /* ====== MODALE TICKET ====== */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 5000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.92);
+      backdrop-filter: blur(8px);
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content {
+      background: var(--gray);
+      border: 2px solid var(--electric-blue);
+      border-radius: 16px;
+      padding: 2rem;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 0 30px var(--electric-blue);
+      position: relative;
+      animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    @keyframes modalPop {
+      0% { transform: scale(0.8); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 1.8rem;
+      color: #fff;
+      cursor: pointer;
+      transition: color 0.3s, transform 0.2s;
+    }
+    .close-btn:hover {
+      color: var(--electric-blue);
+      transform: rotate(90deg);
+    }
+    .ticket-options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+    .ticket-option-btn {
+      background: var(--light-gray);
+      color: white;
+      border: 1px solid var(--border);
+      padding: 0.9rem;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .ticket-option-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0,255,255,0.2), transparent);
+      transition: left 0.6s;
+    }
+    .ticket-option-btn:hover::before {
+      left: 100%;
+    }
+    .ticket-option-btn:hover {
+      background: rgba(0, 255, 255, 0.1);
+      border-color: var(--electric-blue);
+      box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+      transform: translateY(-2px);
+    }
+    #ticket-form input,
+    #ticket-form textarea {
+      outline: none;
+    }
+    #ticket-form input:focus,
+    #ticket-form textarea:focus {
+      border-color: var(--electric-blue);
+      box-shadow: 0 0 8px rgba(0, 255, 255, 0.4);
+    }
+    .scan-line {
+      display: block;
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--electric-blue);
+      animation: scanLine 3s infinite;
+    }
+    @keyframes scanLine {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(200%); }
+    }
+
+    footer {
+      background: rgba(10,10,10,0.92);
+      text-align: center;
+      padding: 2.5rem;
+      margin-top: 4rem;
+      border-top: 1px solid var(--border);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .hierarchy-container { height: 600px; }
+      .leader { top: 10%; left: 15%; }
+      .co-leader { top: 10%; right: 15%; }
+      .frere-darme { top: 40%; left: 10%; }
+      .braqueur { top: 40%; right: 10%; }
+      .tueur { bottom: 10%; left: 15%; }
+      .p-dessai { bottom: 10%; right: 15%; }
+      .tenues-container { flex-direction: column; gap: 2rem; }
+    }
+    @media (max-width: 650px) {
+      .hierarchy-container { height: 700px; }
+      .hierarchy-node { font-size: 1rem; padding: 0.7rem 1rem; }
+      .zentys-logo { font-size: 2.3rem; }
+      h2 { font-size: 2rem; }
+      .grade-item,
+      .role-item,
+      .tenue-category { padding: 0.6rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo" id="logo-top">ZENTYS</div>
+    <nav>
+      <a href="#hierarchy">Hiérarchie</a>
+      <a href="#grades">Grades</a>
+      <a href="#roles">Rôles</a>
+      <a href="#immatricules">Immatricules</a>
+      <a href="#vehicles">Véhicules</a>
+      <a href="#tenues">Tenues</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+  <main>
+    <section>
+      <h1>ZENTYS</h1>
+      <p style="text-align:center; max-width:850px; margin:0 auto; color:#ddd; font-size:1.25rem; line-height:1.8;">
+        Discipline. Loyauté. Immatriculés. Une seule loi : la nôtre.
+      </p>
+    </section>
+
+    <!-- HIÉRARCHIE -->
+    <section id="hierarchy">
+      <h2>HIÉRARCHIE</h2>
+      <div class="hierarchy-container">
+        <svg class="hierarchy-svg" viewBox="0 0 500 500" width="100%" height="100%">
+          <defs>
+            <filter id="electric-glow">
+              <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur"/>
+              <feSpecularLighting in="blur" surfaceScale="5" specularConstant="0.75" specularExponent="20" lighting-color="#00ffff" result="specOut">
+                <fePointLight x="250" y="250" z="200"/>
+              </feSpecularLighting>
+              <feComposite in="specOut" in2="SourceAlpha" operator="in" result="specOut"/>
+              <feComposite in="SourceGraphic" in2="specOut" operator="arithmetic" k1="0" k2="1" k3="1" k4="0" result="litPaint"/>
+            </filter>
+          </defs>
+          <line x1="125" y1="70" x2="375" y2="70" class="electric-line" />
+          <line x1="125" y1="70" x2="75" y2="195" class="electric-line" />
+          <line x1="375" y1="70" x2="425" y2="195" class="electric-line" />
+          <line x1="75" y1="195" x2="125" y2="420" class="electric-line" />
+          <line x1="425" y1="195" x2="375" y2="420" class="electric-line" />
+          <line x1="125" y1="420" x2="375" y2="420" class="electric-line" />
+        </svg>
+        <div class="hierarchy-node leader node-glow">Leader</div>
+        <div class="hierarchy-node co-leader node-glow">Co-Leader</div>
+        <div class="hierarchy-node frere-darme node-glow">Frère D'arme</div>
+        <div class="hierarchy-node braqueur node-glow">Braqueur</div>
+        <div class="hierarchy-node tueur node-glow">Tueur</div>
+        <div class="hierarchy-node p-dessai node-glow">P. D'essaie</div>
+        <div class="zentys-logo">ZENTYS</div>
+      </div>
+    </section>
+
+    <!-- GRADES -->
+    <section id="grades">
+      <h2>GRADES</h2>
+      <div class="grades-grid">
+        <div class="grade-item">
+          <div class="grade-title">LEADER</div>
+          <div class="members-list">
+            <div class="member-item"><span class="immat-badge">29</span> Rubby Mahoukou</div>
+          </div>
+        </div>
+        <div class="grade-item">
+          <div class="grade-title">CO-LEAD</div>
+          <div class="members-list">
+            <div class="member-item"><span class="immat-badge">16</span> Mathieu Driven</div>
+          </div>
+        </div>
+        <div class="grade-item">
+          <div class="grade-title">FRÈRE D'ARME</div>
+          <div class="members-list">
+            <div class="member-item"><span class="immat-badge">02</span> Lily Kashi</div>
+            <div class="member-item"><span class="immat-badge">03</span> Ziko Kashi</div>
+            <div class="member-item"><span class="immat-badge">11</span> Ryouu Jinn</div>
+          </div>
+        </div>
+        <div class="grade-item">
+          <div class="grade-title">BRAQUEUR</div>
+          <div class="members-list">
+            <div class="member-item"><span class="immat-badge"></span></div>
+            <div class="member-item"><span class="immat-badge"></span></div>
+          </div>
+        </div>
+        <div class="grade-item">
+          <div class="grade-title">TUEUR</div>
+          <div class="members-list">
+            <div class="member-item"><span class="immat-badge">01</span> Backs</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RÔLES -->
+    <section id="roles">
+      <h2>RÔLES</h2>
+      <div class="roles-section">
+        <div class="role-column">
+          <div class="role-item">
+            <div class="role-title">Conducteur</div>
+            <div class="role-details">
+              <span class="immat-badge">29</span> Rubby Mahoukou<br>
+              <span class="immat-badge">16</span> Mathieu Driven<br>
+              <span class="immat-badge">03</span> Ziko Kashi
+            </div>
+          </div>
+          <div class="role-item">
+            <div class="role-title">Braquage</div>
+            <div class="role-details">
+              <span class="immat-badge">29</span> Rubby Mahoukou
+            </div>
+          </div>
+          <div class="role-item">
+            <div class="role-title">Otage</div>
+            <div class="role-details">
+              <span class="immat-badge">02</span> Lily Kashi<br>
+              <span class="immat-badge">11</span> Ryouu Jinn<br>
+            </div>
+          </div>
+          <div class="role-item">
+            <div class="role-title">Gérant Illégal</div>
+            <div class="role-details">
+              <span class="immat-badge">16</span> Mathieu Driven<br>
+            </div>
+          </div>
+          <div class="role-item">
+            <div class="role-title">Gérant Support</div>
+            <div class="role-details">
+              <span class="immat-badge">02</span> Lily Kashi<br>
+            </div>
+          </div>
+          <div class="role-item">
+            <div class="role-title">Gérant OP</div>
+            <div class="role-details">
+              <span class="immat-badge">29</span> Rubby Mahoukou<br>
+              <span class="immat-badge">16</span> Mathieu Driven
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- IMMATRICULES -->
+    <section id="immatricules">
+      <h2>IMMATRICULES COMPLETS (01-29)</h2>
+      <div class="immat-full-section">
+        <div class="immat-full-grid">
+          <div class="immat-full-item">
+            <div class="immat-full-header">29 — Rubby Mahoukou</div>
+          </div>
+          <div class="immat-full-item">
+            <div class="immat-full-header">16 — Mathieu Driven</div>
+          </div>
+          <div class="immat-full-item">
+            <div class="immat-full-header">02 — Lily Kashi</div>
+          </div>
+          <div class="immat-full-item">
+            <div class="immat-full-header">03 — Ziko Kashi</div>
+          </div>
+          <div class="immat-full-item">
+            <div class="immat-full-header">11 — Ryouu Jin</div>
+          </div>
+          <div class="immat-full-item">
+            <div class="immat-full-header">01 — Backs</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VÉHICULES -->
+    <section id="vehicles">
+      <h2>VÉHICULES</h2>
+      <div class="vehicles-grid">
+        <div class="vehicle-card">
+          <img src="https://github.com/loucs1546/Concess/blob/38bb4c703c5afc8edcbebdd4b4bd3e4fe13d95ee/Honda%20Civic%20Type%20R%202020.png?raw=true" alt="Honda">
+          <h4>Honda Civic Type R 2020</h4>
+          <p>Accéleration basse, Très bon grip, Très fine, 4 places</p>
+        </div>
+        <div class="vehicle-card">
+          <img src="https://github.com/loucs1546/Concess/blob/38bb4c703c5afc8edcbebdd4b4bd3e4fe13d95ee/BMW%20M3%20E92.png?raw=true" alt="Brickade 6x6">
+          <h4>Bmw M3 E92</h4>
+          <p>Très rapide, Très bonne accéleration, Grip moyen, 2 places</p>
+        </div>
+        <div class="vehicle-card">
+          <img src="https://github.com/loucs1546/Concess/blob/main/Porsche%20911%20GT3%20RS%202016.png?raw=true" alt="Buzzard">
+          <h4>Porsche 911 Gt3 RS</h4>
+          <p>Appui aérien</p>
+        </div>
+        <div class="vehicle-card">
+          <img src="https://github.com/loucs1546/Concess/blob/main/IbWEBV.jpg?raw=true" alt="Oppressor Mk II">
+          <h4>Bmw M5 cs 2019</h4>
+          <p>Accéleration basse, Vitesse basse, Très bon grip, 4 places</p>
+        </div>
+        <div class="vehicle-card">
+          <img src="https://github.com/loucs1546/Concess/blob/38bb4c703c5afc8edcbebdd4b4bd3e4fe13d95ee/Land%20Rover%20Velar.png?raw=true" alt="Longfin">
+          <h4>Land Rover Velar</h4>
+          <p>Bonne accéleration, Bon grip, 4 places,</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TENUES -->
+    <section id="tenues">
+      <h2>TENUES</h2>
+      <div class="tenues-container">
+        <div class="tenue-column">
+          <h3 style="text-align: center; margin-bottom: 1rem; font-size: 1.5rem; color: var(--white);">Tenue Homme</h3>
+          <!-- Répété pour concision — tu peux garder les mêmes blocs que dans ton original -->
+          <div class="tenue-category">
+            <div class="tenue-category-title">Masque</div>
+            <div class="tenue-item">
+              <div class="tenue-info">
+                <span class="tenue-label">Numéro :</span>
+                <span class="tenue-value">174</span>
+              </div>
+              <div class="tenue-info">
+                <span class="tenue-label">Variante :</span>
+                <span class="tenue-value">0</span>
+              </div>
+            </div>
+          </div>
+          <div class="tenue-category">
+            <div class="tenue-category-title">Écharpe et chaînes</div>
+            <div class="tenue-item">
+              <div class="tenue-info">
+                <span class="tenue-label">Numéro :</span>
+                <span class="tenue-value">1</span>
+              </div>
+              <div class="tenue-info">
+                <span class="tenue-label">Variante :</span>
+                <span class="tenue-value">0</span>
+              </div>
+            </div>
+          </div>
+          <div class="tenue-category">
+            <div class="tenue-category-title">Vestes</div>
+            <div class="tenue-item">
+              <div class="tenue-info">
+                <span class="tenue-label">Numéro :</span>
+                <span class="tenue-value">81</span>
+              </div>
+              <div class="tenue-info">
+                <span class="tenue-label">Variante :</span>
+                <span class="tenue-value">0</span>
+              </div>
+            </div>
+          </div>
+          <div class="tenue-category">
+            <div class="tenue-category-title">T-Shirt</div>
+            <div class="tenue-item">
+              <div class="tenue-info">
+                <span class="tenue-label">Numéro :</span>
+                <span class="tenue-value">15</span>
+              </div>
+              <div class="tenue-info">
+                <span class="tenue-label">Variante :</span>
+                <span class="tenue-value">0</span>
+              </div>
+            </div>
+          </div>
+          <div class="tenue-category">
+            <div class="tenue-category-title">Body armor</div>
+            <div class="tenue-item">
+              <div class="tenue-info">
+                <span class="tenue-label">Numéro :</span>
+                <span class="tenue-value">28</span>
+              </div>
+              <div class="tenue-info">
+                <span class="tenue-label">Variante :</span>
+                <span class="tenue-value">8</span>
+              </div>
+            </div>
+          </div>
+          <div class="tenue-category">
+            <div class="tenue-category-title">Sacs et parachute</div>
+            <div class="tenue-item">
+              <div class="tenue-info">
+                <span class="tenue-label">Numéro :</span>
+                <span class="tenue-value">121</span>
+              </div>
+              <div class="tenue-info">
+                <span class="tenue-label">Variante :</span>
+                <span class="tenue-value">0</span>
+              </div>
+            </div>
+          </div>
+          <div class="tenue-category">
+            <div class="tenue-category-title">Haut du Corps</div>
+            <div class="tenue-item">
+              <div class="tenue-info">
+                <span class="tenue-label">Numéro :</span>
+                <span class="tenue-value">5</span>
+              </div>
+              <div class="tenue-info">
+                <span class="tenue-label">Variante :</span>
+                <span class="tenue-value">0</span>
+              </div>
+            </div>
+          </div>
+          <div class="tenue-category">
+            <div class="tenue-category-title">Bas du Corps</div>
+            <div class="tenue-item">
+              <div class="tenue-info">
+                <span class="tenue-label">Numéro :</span>
+                <span class="tenue-value">55</span>
+              </div>
+              <div class="tenue-info">
+                <span class="tenue-label">Variante :</span>
+                <span class="tenue-value">0</span>
+              </div>
+            </div>
+          </div>
+          <div class="tenue-category">
+            <div class="tenue-category-title">Chaussures</div>
+            <div class="tenue-item">
+              <div class="tenue-info">
+                <span class="tenue-label">Numéro :</span>
+                <span class="tenue-value">8</span>
+              </div>
+              <div class="tenue-info">
+                <span class="tenue-label">Variante :</span>
+                <span class="tenue-value">0</span>
+              </div>
+            </div>
+          </div>
+          <div class="tenue-category">
+            <div class="tenue-category-title">Chapeaux et casques</div>
+            <div class="tenue-item">
+              <div class="tenue-info">
+                <span class="tenue-label">Numéro :</span>
+                <span class="tenue-value">273</span>
+              </div>
+              <div class="tenue-info">
+                <span class="tenue-label">Variante :</span>
+                <span class="tenue-value">10</span>
+              </div>
+            </div>
+          </div>
+          <div class="tenue-category">
+            <div class="tenue-category-title">Lunettes</div>
+            <div class="tenue-item">
+              <div class="tenue-info">
+                <span class="tenue-label">Numéro :</span>
+                <span class="tenue-value">25</span>
+              </div>
+              <div class="tenue-info">
+                <span class="tenue-label">Variante :</span>
+                <span class="tenue-value">4</span>
+              </div>
+            </div>
+            <div class="tenue-note">Personalisable selon vos goûts (il est obligatoire de rester dans le même thème)</div>
+          </div>
+          <div class="tenue-category">
+            <div class="tenue-category-title">Accessoires d'oreille</div>
+            <div class="tenue-item">
+              <div class="tenue-info">
+                <span class="tenue-label">Numéro :</span>
+                <span class="tenue-value">-1</span>
+              </div>
+              <div class="tenue-info">
+                <span class="tenue-label">Variante :</span>
+                <span class="tenue-value">0</span>
+              </div>
+            </div>
+          </div>
+          <div class="tenue-category">
+            <div class="tenue-category-title">Montres</div>
+            <div class="tenue-item">
+              <div class="tenue-info">
+                <span class="tenue-label">Numéro :</span>
+                <span class="tenue-value">30</span>
+              </div>
+              <div class="tenue-info">
+                <span class="tenue-label">Variante :</span>
+                <span class="tenue-value">0</span>
+              </div>
+            </div>
+            <div class="tenue-note">Personalisable selon vos goûts (il est obligatoire de rester dans le même thème)</div>
+          </div>
+          <div class="tenue-category">
+            <div class="tenue-category-title">Bracelets</div>
+            <div class="tenue-item">
+              <div class="tenue-info">
+                <span class="tenue-label">Numéro :</span>
+                <span class="tenue-value">0</span>
+              </div>
+              <div class="tenue-info">
+                <span class="tenue-label">Variante :</span>
+                <span class="tenue-value">0</span>
+              </div>
+            </div>
+            <div class="tenue-note">Personalisable selon vos goûts (il est obligatoire de rester dans le même thème)</div>
+          </div>
+        </div>
+        <div class="tenue-column">
+          <h3 style="text-align: center; margin-bottom: 1rem; font-size: 1.5rem; color: var(--white);">Tenue Femme</h3>
+          <!-- Identique à Homme -->
+          <div class="tenue-category">
+            <div class="tenue-category-title">Masque</div>
+            <div class="tenue-item">
+              <div class="tenue-info">
+                <span class="tenue-label">Numéro :</span>
+                <span class="tenue-value">169</span>
+              </div>
+              <div class="tenue-info">
+                <span class="tenue-label">Variante :</span>
+                <span class="tenue-value">0</span>
+              </div>
+            </div>
+          </div>
+          <div class="tenue-category">
+            <div class="tenue-category-title">Écharpe et chaînes</div>
+            <div class="tenue-item">
+              <div class="tenue-info">
+                <span class="tenue-label">Numéro :</span>
+                <span class="tenue-value">2</span>
+              </div>
+              <div class="tenue-info">
+                <span class="tenue-label">Variante :</span>
+                <span class="tenue-value">0</span>
+              </div>
+            </div>
+          </div>
+          <div class="tenue-category">
+            <div class="tenue-category-title">Vestes</div>
+            <div class="tenue-item">
+              <div class="tenue-info">
+                <span class="tenue-label">Numéro :</span>
+                <span class="tenue-value">338</span>
+              </div>
+              <div class="tenue-info">
+                <span class="tenue-label">Variante :</span>
+                <span class="tenue-value">1</span>
+              </div>
+            </div>
+          </div>
+          <div class="tenue-category">
+            <div class="tenue-category-title">T-Shirt</div>
+            <div class="tenue-item">
+              <div class="tenue-info">
+                <span class="tenue-label">Numéro :</span>
+                <span class="tenue-value">207</span>
+              </div>
+              <div class="tenue-info">
+                <span class="tenue-label">Variante :</span>
+                <span class="tenue-value">0</span>
+              </div>
+            </div>
+          </div>
+          <div class="tenue-category">
+            <div class="tenue-category-title">Body armor</div>
+            <div class="tenue-item">
+              <div class="tenue-info">
+                <span class="tenue-label">Numéro :</span>
+                <span class="tenue-value">0</span>
+              </div>
+              <div class="tenue-info">
+                <span class="tenue-label">Variante :</span>
+                <span class="tenue-value">0</span>
+              </div>
+            </div>
+          </div>
+          <div class="tenue-category">
+            <div class="tenue-category-title">Sacs et parachute</div>
+            <div class="tenue-item">
+              <div class="tenue-info">
+                <span class="tenue-label">Numéro :</span>
+                <span class="tenue-value">84</span>
+              </div>
+              <div class="tenue-info">
+                <span class="tenue-label">Variante :</span>
+                <span class="tenue-value">0</span>
+              </div>
+            </div>
+          </div>
+          <div class="tenue-category">
+            <div class="tenue-category-title">Haut du Corps</div>
+            <div class="tenue-item">
+              <div class="tenue-info">
+                <span class="tenue-label">Numéro :</span>
+                <span class="tenue-value">59</span>
+              </div>
+              <div class="tenue-info">
+                <span class="tenue-label">Variante :</span>
+                <span class="tenue-value">0</span>
+              </div>
+            </div>
+          </div>
+          <div class="tenue-category">
+            <div class="tenue-category-title">Bas du Corps</div>
+            <div class="tenue-item">
+              <div class="tenue-info">
+                <span class="tenue-label">Numéro :</span>
+                <span class="tenue-value">149</span>
+              </div>
+              <div class="tenue-info">
+                <span class="tenue-label">Variante :</span>
+                <span class="tenue-value">1</span>
+              </div>
+            </div>
+          </div>
+          <div class="tenue-category">
+            <div class="tenue-category-title">Chaussures</div>
+            <div class="tenue-item">
+              <div class="tenue-info">
+                <span class="tenue-label">Numéro :</span>
+                <span class="tenue-value">27</span>
+              </div>
+              <div class="tenue-info">
+                <span class="tenue-label">Variante :</span>
+                <span class="tenue-value">0</span>
+              </div>
+            </div>
+          </div>
+          <div class="tenue-category">
+            <div class="tenue-category-title">Chapeaux et casques</div>
+            <div class="tenue-item">
+              <div class="tenue-info">
+                <span class="tenue-label">Numéro :</span>
+                <span class="tenue-value">-1</span>
+              </div>
+              <div class="tenue-info">
+                <span class="tenue-label">Variante :</span>
+                <span class="tenue-value">-1</span>
+              </div>
+            </div>
+          </div>
+          <div class="tenue-category">
+            <div class="tenue-category-title">Lunettes</div>
+            <div class="tenue-item">
+              <div class="tenue-info">
+                <span class="tenue-label">Numéro :</span>
+                <span class="tenue-value">6</span>
+              </div>
+              <div class="tenue-info">
+                <span class="tenue-label">Variante :</span>
+                <span class="tenue-value">0</span>
+              </div>
+            </div>
+            <div class="tenue-note">Personalisable selon vos goûts (il est obligatoire de rester dans le même thème)</div>
+          </div>
+          <div class="tenue-category">
+            <div class="tenue-category-title">Accessoires d'oreille</div>
+            <div class="tenue-item">
+              <div class="tenue-info">
+                <span class="tenue-label">Numéro :</span>
+                <span class="tenue-value">-1</span>
+              </div>
+              <div class="tenue-info">
+                <span class="tenue-label">Variante :</span>
+                <span class="tenue-value">-1</span>
+              </div>
+            </div>
+          </div>
+          <div class="tenue-category">
+            <div class="tenue-category-title">Montres</div>
+            <div class="tenue-item">
+              <div class="tenue-info">
+                <span class="tenue-label">Numéro :</span>
+                <span class="tenue-value">4</span>
+              </div>
+              <div class="tenue-info">
+                <span class="tenue-label">Variante :</span>
+                <span class="tenue-value">1</span>
+              </div>
+            </div>
+            <div class="tenue-note">Personalisable selon vos goûts (il est obligatoire de rester dans le même thème)</div>
+          </div>
+          <div class="tenue-category">
+            <div class="tenue-category-title">Bracelets</div>
+            <div class="tenue-item">
+              <div class="tenue-info">
+                <span class="tenue-label">Numéro :</span>
+                <span class="tenue-value">16</span>
+              </div>
+              <div class="tenue-info">
+                <span class="tenue-label">Variante :</span>
+                <span class="tenue-value">0</span>
+              </div>
+            </div>
+            <div class="tenue-note">Personalisable selon vos goûts (il est obligatoire de rester dans le même thème)</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <!-- Contact -->
+    <section id="contact">
+      <h2>CONTACT</h2>
+      <div class="contact-section">
+        <p><i class="fas fa-crown"></i> <strong>ZENTYS</strong> – Noir & Blanc</p>
+        <a href="https://discord.gg/votre-lien" target="_blank" class="discord-btn">
+          <i class="fab fa-discord"></i> Rejoindre le Discord
+        </a>
+        <!-- BOUTON TICKET AJOUTÉ -->
+        <p><button id="open-ticket-btn" class="discord-btn" style="background: #00ffff; color: #000; margin-top: 0.8rem;">
+          <i class="fas fa-ticket-alt"></i> Ouvrir un ticket
+        </button></p>
+        <p><i class="fas fa-phone"></i> <a href="tel:+33612345678" style="color:#fff; text-decoration: none;">+33 6 12 34 56 78</a></p>
+      </div>
+
+      <!-- MODALE TICKET -->
+      <div id="ticket-modal" class="modal">
+        <div class="modal-content">
+          <span class="close-btn">&times;</span>
+          <h3 style="text-align: center; margin-bottom: 1.5rem; color: var(--white); position: relative;">
+            Ouvrir un ticket
+            <span class="scan-line"></span>
+          </h3>
+          
+          <div class="ticket-options">
+            <button class="ticket-option-btn" data-type="rejoindre">Rejoindre l'organisation</button>
+            <button class="ticket-option-btn" data-type="blanchiment">Question sur le blanchiment</button>
+            <button class="ticket-option-btn" data-type="coop">Proposer une coopération</button>
+            <button class="ticket-option-btn" data-type="autre">Autre</button>
+          </div>
+
+          <form id="ticket-form" style="display: none; margin-top: 1.5rem; color: #eee;">
+            <p id="form-title" style="text-align: center; color: #aaa; margin-bottom: 1.2rem;"></p>
+
+            <div style="margin-bottom: 1rem;">
+              <label style="display: block; margin-bottom: 0.4rem; font-weight: 600;">Nom / Prénom :</label>
+              <input type="text" id="ticket-name" placeholder="Ex: Jean Dupont" required
+                style="width: 100%; padding: 0.7rem; border-radius: 8px; background: var(--gray); color: white; border: 1px solid var(--border);">
+            </div>
+
+            <div style="margin-bottom: 1rem;">
+              <label style="display: block; margin-bottom: 0.4rem; font-weight: 600;">Pseudo Discord :</label>
+              <input type="text" id="ticket-discord" placeholder="Ex: Jean#1234 ou @Jean" required
+                style="width: 100%; padding: 0.7rem; border-radius: 8px; background: var(--gray); color: white; border: 1px solid var(--border);">
+            </div>
+
+            <div style="margin-bottom: 1rem;">
+              <label style="display: block; margin-bottom: 0.4rem; font-weight: 600;">Disponibilité (si RDV nécessaire) :</label>
+              <input type="text" id="ticket-availability" placeholder="Ex: Soirée, Week-end..."
+                style="width: 100%; padding: 0.7rem; border-radius: 8px; background: var(--gray); color: white; border: 1px solid var(--border);">
+            </div>
+
+            <div style="margin-bottom: 1.2rem;">
+              <label style="display: block; margin-bottom: 0.4rem; font-weight: 600;">Détails de votre demande :</label>
+              <textarea id="ticket-message" placeholder="Décrivez clairement votre requête (min. 10 caractères)..." rows="4" required
+                style="width: 100%; padding: 0.8rem; border-radius: 8px; background: var(--gray); color: white; border: 1px solid var(--border); resize: vertical;"></textarea>
+            </div>
+
+            <div style="text-align: center;">
+              <button type="submit" class="discord-btn" style="padding: 0.7rem 1.8rem; font-size: 1rem; background: #5865F2; color: white;">
+                <i class="fas fa-paper-plane"></i> Envoyer le ticket
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 ZENTYS • Organisation GTA RP • Tous droits réservés</p>
+  </footer>
+
+  <script>
+    // Smooth scroll + logo
+    document.getElementById('logo-top').addEventListener('click', function() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    document.querySelectorAll('a[href^="#"]:not(.discord-btn)').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        window.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' });
+      });
+    });
+
+    // Effet hiérarchie
+    setInterval(() => {
+      const nodes = document.querySelectorAll('.hierarchy-node');
+      nodes.forEach(node => {
+        if (Math.random() > 0.7) {
+          node.style.boxShadow = `0 0 25px ${getRandomColor()}, 0 0 10px #fff`;
+          setTimeout(() => {
+            node.style.boxShadow = `0 0 18px ${getRandomColor()}, 0 0 8px #fff2`;
+          }, 300);
+        }
+      });
+    }, 2000);
+    function getRandomColor() {
+      return ['#00ffff', '#00eaff', '#00ccff'][Math.floor(Math.random() * 3)];
+    }
+
+    // === MODALE TICKET ===
+    const modal = document.getElementById('ticket-modal');
+    const openBtn = document.getElementById('open-ticket-btn');
+    const closeBtn = document.querySelector('.close-btn');
+    const optionBtns = document.querySelectorAll('.ticket-option-btn');
+    const ticketForm = document.getElementById('ticket-form');
+    const formTitle = document.getElementById('form-title');
+
+    if (openBtn) {
+      openBtn.addEventListener('click', () => {
+        modal.style.display = 'flex';
+      });
+    }
+
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
+        ticketForm.style.display = 'none';
+        ticketForm.reset();
+      });
+    }
+
+    // 🔒 Empêche fermeture par clic extérieur
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        e.stopPropagation();
+      }
+    });
+
+    optionBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const type = btn.dataset.type;
+        let title = '';
+        switch(type) {
+          case 'rejoindre': title = "Demande : Rejoindre ZENTYS"; break;
+          case 'blanchiment': title = "Demande : Blanchiment d'argent"; break;
+          case 'coop': title = "Demande : Coopération avec ZENTYS"; break;
+          case 'autre': title = "Autre demande"; break;
+        }
+        formTitle.textContent = title;
+        ticketForm.style.display = 'block';
+      });
+    });
+
+    if (ticketForm) {
+      ticketForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const name = document.getElementById('ticket-name').value.trim();
+        const discord = document.getElementById('ticket-discord').value.trim();
+        const availability = document.getElementById('ticket-availability').value.trim();
+        const message = document.getElementById('ticket-message').value.trim();
+        const type = formTitle.textContent.replace('Demande : ', '');
+
+        // Validation Nom : espace requis
+        if (!name || !name.includes(' ')) {
+          alert('❌ Votre nom doit inclure un prénom et un nom (ex: Jean Dupont).');
+          return;
+        }
+
+        // Validation Discord : # ou @ requis
+        if (!discord || (!discord.includes('#') && !discord.includes('@'))) {
+          alert('❌ Votre pseudo Discord doit contenir "@" ou "#".\nEx: @Jean ou Jean#1234');
+          return;
+        }
+
+        // Validation disponibilité (si remplie)
+        if (availability && availability.length < 2) {
+          alert('❌ La disponibilité doit faire au moins 2 caractères.');
+          return;
+        }
+
+        // Validation message
+        if (!message || message.length < 10) {
+          alert('❌ Veuillez décrire votre demande en au moins 10 caractères.');
+          return;
+        }
+
+        // 🔴 REMPLACE PAR TON WEBHOOK DISCORD
+        const webhookURL = "https://discord.com/api/webhooks/1430617383932002415/gfdLg-FVXugleYjSw6rgdoOFDg6B1alnPwJpQOBFyQN_R5soZ0X6ylx72sX35ii0rosZ";
+
+        const embed = {
+          title: `📨 Nouveau ticket : ${type}`,
+          color: 0x00ffff,
+          fields: [
+            { name: '👤 Nom complet', value: name, inline: true },
+            { name: '💬 Discord', value: discord, inline: true },
+            { name: '🕒 Disponibilité', value: availability || 'Non précisée', inline: false },
+            { name: '📄 Détails', value: message, inline: false }
+          ],
+          timestamp: new Date().toISOString(),
+          footer: { text: "ZENTYS - Système de tickets" }
+        };
+
+        try {
+          const response = await fetch(webhookURL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ embeds: [embed] })
+          });
+
+          if (response.ok) {
+            alert(`✅ Ticket envoyé avec succès !\n\nNous vous contacterons bientôt sur Discord.\n\nMerci de votre confiance.`);
+          } else {
+            alert('❌ Erreur lors de l’envoi. Veuillez réessayer plus tard.');
+          }
+        } catch (err) {
+          alert('❌ Impossible d’envoyer le ticket. Vérifiez votre connexion.');
+          console.error('Erreur réseau:', err);
+        }
+
+        modal.style.display = 'none';
+        ticketForm.reset();
+        ticketForm.style.display = 'none';
+      });
+    }
+  </script>
+</body>
+</html>
