@@ -2,9 +2,11 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>ZENTYS | Organisation Criminelle</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <!-- ✅ CDN Supabase plus fiable (UMD build explicite) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <style>
     :root {
       --black: #000000;
@@ -26,12 +28,15 @@
       background-color: var(--dark);
       color: var(--white);
       overflow-x: hidden;
-      background-image: 
+      background-image:
         linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
-        url('https://cdn.gamer-network.net/2020/articles/0000/80/80799/los-santos-gta-5.jpg');
+        url('');
       background-size: cover;
       background-position: center;
       background-attachment: fixed;
+    }
+    @media (max-width: 768px) {
+      body { background-attachment: scroll; }
     }
     header {
       background: rgba(0, 0, 0, 0.92);
@@ -73,18 +78,9 @@
       background: var(--white);
       transition: width 0.3s ease;
     }
-    nav a:hover::after {
-      width: 100%;
-    }
-    main {
-      margin-top: 80px;
-    }
-    section {
-      padding: 7rem 8%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+    nav a:hover::after { width: 100%; }
+    main { margin-top: 80px; }
+    section { padding: 7rem 8%; display: flex; flex-direction: column; align-items: center; }
     h1 {
       font-size: 4.2rem;
       text-align: center;
@@ -97,10 +93,7 @@
       text-shadow: 0 0 20px rgba(255,255,255,0.3);
       animation: pulseGlow 3s infinite alternate;
     }
-    @keyframes pulseGlow {
-      0% { text-shadow: 0 0 15px rgba(255,255,255,0.3); }
-      100% { text-shadow: 0 0 30px rgba(255,255,255,0.6), 0 0 40px rgba(255,255,255,0.4); }
-    }
+    @keyframes pulseGlow { 0%{ text-shadow:0 0 15px rgba(255,255,255,0.3);}100%{ text-shadow:0 0 30px rgba(255,255,255,0.6),0 0 40px rgba(255,255,255,0.4); } }
     h2 {
       font-size: 2.4rem;
       margin: 4rem 0 3rem;
@@ -111,11 +104,7 @@
       display: inline-block;
       animation: glitch 3s infinite;
     }
-    @keyframes glitch {
-      0% { filter: brightness(1); }
-      50% { filter: brightness(1.3) hue-rotate(5deg); }
-      100% { filter: brightness(1); }
-    }
+    @keyframes glitch { 0%{filter:brightness(1)}50%{filter:brightness(1.3) hue-rotate(5deg)}100%{filter:brightness(1)} }
     h2::after {
       content: '';
       position: absolute;
@@ -127,30 +116,12 @@
       background: linear-gradient(to right, transparent, #fff, transparent);
     }
 
-    /* ====== HIÉRARCHIE EN DIAMANT ÉLECTRIQUE ====== */
-    .hierarchy-container {
-      position: relative;
-      width: 100%;
-      max-width: 800px;
-      margin: 3rem auto;
-      padding: 4rem 0;
-      height: 500px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .hierarchy-svg {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 1;
-    }
+    /* Hierarchy styles kept as before */
+    .hierarchy-container { position: relative; width: 100%; max-width: 800px; margin: 3rem auto; padding: 4rem 0; height: 500px; display:flex; justify-content:center; align-items:center; }
+    .hierarchy-svg { position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:1; }
     .hierarchy-node {
       position: absolute;
-      background: rgba(20, 20, 20, 0.8);
+      background: rgba(20,20,20,0.8);
       border: 2px solid var(--electric-blue);
       border-radius: 12px;
       padding: 0.95rem 2.2rem;
@@ -160,464 +131,256 @@
       box-shadow: 0 0 18px var(--electric-blue), 0 0 8px #fff2;
       transition: all 0.3s ease;
       text-shadow: 0 2px 6px var(--electric-blue);
-      font-family: 'Segoe UI', system-ui, sans-serif;
       cursor: pointer;
       backdrop-filter: blur(5px);
       z-index: 2;
     }
-    .hierarchy-node:hover {
-      box-shadow: 0 0 32px var(--electric-blue), 0 0 20px #fff5;
-      transform: scale(1.1) rotate(-2deg);
-      background: rgba(0, 255, 255, 0.1);
-      color: var(--electric-blue);
-      border-color: #fff;
-      text-shadow: 0 0 10px var(--electric-blue);
-    }
-    .leader       { top: 10%; left: 25%; }
-    .co-leader    { top: 10%; right: 25%; }
-    .frere-darme  { top: 39%; left: 10%; }
-    .braqueur     { top: 39%; right: 10%; }
-    .tueur        { bottom: 10%; left: 25%; }
-    .p-dessai     { bottom: 10%; right: 25%; }
-    .zentys-logo {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 3;
-      font-family: 'Brush Script MT', cursive;
-      font-size: 2.5rem;
-      font-weight: 600;
-      color: var(--white);
-      text-shadow: 0 0 34px var(--electric-blue), 0 0 12px #fff;
-      letter-spacing: 2px;
-      pointer-events: none;
-      user-select: none;
-      animation: electricPulse 2s infinite alternate;
-    }
-    @keyframes electricPulse {
-      0% { text-shadow: 0 0 20px var(--electric-blue), 0 0 8px #fff; }
-      100% { text-shadow: 0 0 40px var(--electric-blue), 0 0 16px #fff; }
-    }
-    .electric-line {
-      stroke: var(--electric-blue);
-      stroke-width: 3;
-      stroke-dasharray: 14,7,3,4;
-      filter: url(#electric-glow);
-      animation: electric 1.65s linear infinite;
-    }
-    @keyframes electric {
-      to { stroke-dashoffset: -40; }
-    }
-    .electric-glow {
-      filter: drop-shadow(0 0 8px var(--electric-blue)) drop-shadow(0 0 4px #fff);
-    }
-    .node-glow {
-      animation: nodeGlow 2s infinite alternate;
-    }
-    @keyframes nodeGlow {
-      0% { box-shadow: 0 0 15px var(--electric-blue); }
-      100% { box-shadow: 0 0 30px var(--electric-blue), 0 0 10px #fff; }
-    }
+    .hierarchy-node:hover { box-shadow: 0 0 32px var(--electric-blue),0 0 20px #fff5; transform:scale(1.1) rotate(-2deg); background:rgba(0,255,255,0.1); color:var(--electric-blue); border-color:#fff; text-shadow:0 0 10px var(--electric-blue); }
+    .leader{ top:10%; left:25% } .co-leader{ top:10%; right:25% } .frere-darme{ top:39%; left:10% } .braqueur{ top:39%; right:10% } .tueur{ bottom:10%; left:25% } .p-dessai{ bottom:10%; right:25% }
+    .zentys-logo { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); z-index:3; font-family:'Brush Script MT',cursive; font-size:2.5rem; font-weight:600; color:var(--white); text-shadow:0 0 34px var(--electric-blue),0 0 12px #fff; letter-spacing:2px; pointer-events:none; user-select:none; animation:electricPulse 2s infinite alternate; }
+    @keyframes electricPulse { 0%{ text-shadow:0 0 20px var(--electric-blue),0 0 8px #fff } 100%{ text-shadow:0 0 40px var(--electric-blue),0 0 16px #fff } }
+    .electric-line { stroke:var(--electric-blue); stroke-width:3; stroke-dasharray:14,7,3,4; filter:url(#electric-glow); animation:electric 1.65s linear infinite; }
+    @keyframes electric { to{ stroke-dashoffset: -40; } }
+    .electric-glow { filter: drop-shadow(0 0 8px var(--electric-blue)) drop-shadow(0 0 4px #fff); }
+    .node-glow { animation: nodeGlow 2s infinite alternate; }
+    @keyframes nodeGlow { 0%{ box-shadow:0 0 15px var(--electric-blue); } 100%{ box-shadow:0 0 30px var(--electric-blue),0 0 10px #fff; } }
 
-    /* ====== GRILLES & SECTIONS ====== */
-    .grades-grid,
-    .roles-section .role-column,
-    .immat-full-grid,
-    .vehicles-grid,
-    .tenues-container {
-      width: 100%;
-      max-width: 1200px;
-    }
-    .grades-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 1.8rem;
-      margin-top: 2.5rem;
-    }
-    .grade-item {
-      background: var(--light-gray);
-      border-radius: 10px;
-      padding: 0.8rem 1.2rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.3rem;
-      transition: transform 0.3s;
-    }
-    .grade-item:hover { transform: translateY(-5px); }
-    .grade-title {
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: var(--white);
-      text-transform: uppercase;
-      text-align: center;
-      width: 100%;
-    }
-    .members-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.3rem;
-      justify-content: center;
-      width: 100%;
-    }
-    .member-item {
-      display: flex;
-      align-items: center;
-      gap: 0.2rem;
-      font-size: 0.9rem;
-      color: #aaa;
-      background: rgba(255,255,255,0.1);
-      padding: 0.2rem 0.4rem;
-      border-radius: 4px;
-    }
-    .immat-badge {
-      display: inline-block;
-      background: var(--white);
-      color: var(--black);
-      font-weight: bold;
-      padding: 0.1rem 0.3rem;
-      border-radius: 3px;
-      font-size: 0.8rem;
-    }
+    /* Layout & grids */
+    .grades-grid, .role-column, .immat-full-grid, .vehicles-grid, .tenues-container { width:100%; max-width:1200px; }
+    .grades-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:1.8rem; margin-top:2.5rem; }
+    .grade-item { background:var(--light-gray); border-radius:10px; padding:.8rem 1.2rem; box-shadow:0 4px 12px rgba(0,0,0,0.5); display:flex; flex-direction:column; gap:.3rem; transition:transform .3s; }
+    .grade-item:hover { transform:translateY(-5px); }
+    .grade-title { font-size:1.25rem; font-weight:700; color:var(--white); text-transform:uppercase; text-align:center; width:100%; }
+    .members-list { display:flex; flex-wrap:wrap; gap:.3rem; justify-content:center; width:100%; }
+    .member-item { display:flex; align-items:center; gap:.2rem; font-size:.9rem; color:#aaa; background:rgba(255,255,255,0.1); padding:.2rem .4rem; border-radius:4px; cursor:pointer; }
+    .member-item:hover { background:rgba(0,255,255,0.2); color:var(--electric-blue); }
+    .immat-badge { display:inline-block; background:var(--white); color:var(--black); font-weight:bold; padding:.1rem .3rem; border-radius:3px; font-size:.8rem; }
 
-    /* RÔLES */
-    .roles-section {
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
-      margin-top: 2.5rem;
-    }
-    .role-column {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 1.8rem;
-    }
-    .role-item {
-      background: var(--light-gray);
-      border-radius: 10px;
-      padding: 0.8rem 1.2rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.3rem;
-      transition: transform 0.3s;
-    }
-    .role-item:hover { transform: translateY(-5px); }
-    .role-title {
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: var(--white);
-      text-transform: uppercase;
-    }
-    .role-details {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 0.3rem;
-      font-size: 0.9rem;
-      color: #aaa;
-      width: 100%;
-    }
+    /* role / immat / vehicles / tenues (kept) */
+    .roles-section { display:flex; flex-direction:column; gap:2rem; margin-top:2.5rem; }
+    .role-column { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:1.8rem; }
+    .role-item { background:var(--light-gray); border-radius:10px; padding:.8rem 1.2rem; box-shadow:0 4px 12px rgba(0,0,0,0.5); transition:transform .3s; }
+    .role-item:hover { transform:translateY(-5px); }
+    .role-title { font-size:1.25rem; font-weight:700; color:var(--white); text-transform:uppercase; }
+    .role-details { display:flex; flex-wrap:wrap; gap:.3rem; color:#aaa; }
 
-    /* IMMATRICULES */
-    .immat-full-section {
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
-      margin-top: 2.5rem;
-    }
-    .immat-full-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 1.8rem;
-    }
-    .immat-full-item {
-      background: var(--light-gray);
-      border-radius: 10px;
-      padding: 1rem 1.5rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.5rem;
-      transition: transform 0.3s;
-    }
-    .immat-full-item:hover { transform: translateY(-5px); }
-    .immat-full-header {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--white);
-    }
+    /* vehicles */
+    .immat-full-section { display:flex; flex-direction:column; gap:2rem; margin-top:2.5rem; }
+    .immat-full-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:1.8rem; }
+    .immat-full-item { background:var(--light-gray); border-radius:10px; padding:1rem 1.5rem; box-shadow:0 4px 12px rgba(0,0,0,0.5); transition:transform .3s; }
+    .immat-full-item:hover { transform:translateY(-5px); }
+    .immat-full-header { font-size:1.1rem; font-weight:700; color:var(--white); }
 
-    /* VÉHICULES */
-    .vehicles-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 2.2rem;
-      margin-top: 2.5rem;
-    }
-    .vehicle-card {
-      background: var(--light-gray);
-      border-radius: 14px;
-      overflow: hidden;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.6);
-      transition: transform 0.4s;
-    }
-    .vehicle-card:hover {
-      transform: translateY(-12px);
-      box-shadow: 0 12px 30px rgba(0,0,0,0.8), 0 0 20px rgba(255,255,255,0.1);
-    }
-    .vehicle-card img {
-      width: 100%;
-      height: 130px;
-      object-fit: cover;
-      border-bottom: 2px solid var(--white);
-    }
-    .vehicle-card h4 {
-      padding: 0.9rem 0.8rem 0.5rem;
-      font-size: 1.15rem;
-    }
+    .vehicles-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:2.2rem; margin-top:2.5rem; }
+    .vehicle-card { background:var(--light-gray); border-radius:14px; overflow:hidden; box-shadow:0 8px 20px rgba(0,0,0,0.6); transition:transform .4s; }
+    .vehicle-card:hover { transform:translateY(-12px); box-shadow:0 12px 30px rgba(0,0,0,0.8),0 0 20px rgba(255,255,255,0.1); }
+    .vehicle-card img { width:100%; height:130px; object-fit:cover; border-bottom:2px solid var(--white); }
+    .vehicle-card h4 { padding:.9rem .8rem .5rem; font-size:1.15rem; }
 
-    /* TENUES */
-    .tenues-section {
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
-      margin-top: 2.5rem;
-    }
-    .tenues-container {
-      display: flex;
-      gap: 5rem;
-      width: 100%;
-      justify-content: center;
-    }
-    .tenue-column {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      max-width: 300px;
-    }
-    .tenue-category {
-      background: var(--light-gray);
-      border-radius: 10px;
-      padding: 0.8rem 1.2rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.5rem;
-      transition: transform 0.3s;
-    }
-    .tenue-category:hover { transform: translateY(-5px); }
-    .tenue-category-title {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--white);
-      text-transform: uppercase;
-      width: 100%;
-      text-align: center;
-    }
-    .tenue-item {
-      display: flex;
-      flex-direction: column;
-      gap: 0.2rem;
-      width: 100%;
-      font-size: 0.9rem;
-      color: #aaa;
-      padding: 0.3rem 0;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-    }
-    .tenue-item:last-child { border-bottom: none; }
-    .tenue-info {
-      display: flex;
-      gap: 0.5rem;
-      align-items: center;
-    }
-    .tenue-label {
-      font-weight: 600;
-      min-width: 70px;
-    }
-    .tenue-value {
-      background: rgba(255,255,255,0.1);
-      color: var(--white);
-      padding: 0.2rem 0.5rem;
-      border-radius: 4px;
-      font-size: 0.85rem;
-      min-width: 30px;
-      text-align: center;
-    }
-    .tenue-note {
-      font-style: italic;
-      font-size: 0.8rem;
-      color: #888;
-      margin-top: 0.3rem;
-      width: 100%;
-      text-align: center;
-    }
+    /* tenues */
+    .tenues-section { display:flex; flex-direction:column; gap:2rem; margin-top:2.5rem; }
+    .tenues-container { display:flex; gap:5rem; width:100%; justify-content:center; }
+    .tenue-column { flex:1; display:flex; flex-direction:column; gap:1rem; max-width:300px; }
+    .tenue-category { background:var(--light-gray); border-radius:10px; padding:.8rem 1.2rem; box-shadow:0 4px 12px rgba(0,0,0,0.5); transition:transform .3s; }
+    .tenue-category:hover { transform:translateY(-5px); }
+    .tenue-category-title { font-size:1.1rem; font-weight:700; color:var(--white); text-transform:uppercase; text-align:center; }
+    .tenue-item { display:flex; flex-direction:column; gap:.2rem; width:100%; font-size:.9rem; color:#aaa; padding:.3rem 0; border-bottom:1px solid rgba(255,255,255,0.05); }
+    .tenue-item:last-child { border-bottom:none; }
+    .tenue-info { display:flex; gap:.5rem; align-items:center; }
+    .tenue-label { font-weight:600; min-width:70px; }
+    .tenue-value { background:rgba(255,255,255,0.1); color:var(--white); padding:.2rem .5rem; border-radius:4px; font-size:.85rem; min-width:30px; text-align:center; }
+    .tenue-note { font-style:italic; font-size:.8rem; color:#888; margin-top:.3rem; text-align:center; }
 
-    /* ====== CONTACT + MODALE TICKET ====== */
-    .contact-section {
-      text-align: center;
-      margin-top: 2.5rem;
-      max-width: 700px;
-    }
-    .discord-btn {
-      background: #5865F2;
-      color: white;
-      border: none;
-      padding: 1rem 2.2rem;
-      border-radius: 50px;
-      font-weight: 600;
-      font-size: 1.25rem;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.8rem;
-      margin: 1rem 0;
-      transition: all 0.3s;
-    }
-    .discord-btn:hover {
-      background: #4752c4;
-      transform: translateY(-3px);
-      box-shadow: 0 6px 20px rgba(88,101,242,0.5);
-    }
+    /* Contact and buttons */
+    .contact-section { text-align:center; margin-top:2.5rem; max-width:700px; }
+    .discord-btn { background:#5865F2; color:white; border:none; padding:1rem 2.2rem; border-radius:50px; font-weight:600; font-size:1.25rem; cursor:pointer; display:inline-flex; align-items:center; gap:.8rem; margin:1rem 0; transition:all .3s; }
+    .discord-btn:hover { background:#4752c4; transform:translateY(-3px); box-shadow:0 6px 20px rgba(88,101,242,0.5); }
+    .discord-btn.secondary { background:#00eaff; color:#000; }
 
-    /* ====== MODALE TICKET ====== */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 5000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.92);
-      backdrop-filter: blur(8px);
-      justify-content: center;
-      align-items: center;
-    }
-    .modal-content {
-      background: var(--gray);
-      border: 2px solid var(--electric-blue);
-      border-radius: 16px;
-      padding: 2rem;
-      width: 90%;
-      max-width: 500px;
-      box-shadow: 0 0 30px var(--electric-blue);
-      position: relative;
-      animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    @keyframes modalPop {
-      0% { transform: scale(0.8); opacity: 0; }
-      100% { transform: scale(1); opacity: 1; }
-    }
-    .close-btn {
-      position: absolute;
-      top: 15px;
-      right: 20px;
-      font-size: 1.8rem;
-      color: #fff;
-      cursor: pointer;
-      transition: color 0.3s, transform 0.2s;
-    }
-    .close-btn:hover {
-      color: var(--electric-blue);
-      transform: rotate(90deg);
-    }
-    .ticket-options {
-      display: flex;
-      flex-direction: column;
-      gap: 0.9rem;
-    }
-    .ticket-option-btn {
-      background: var(--light-gray);
-      color: white;
-      border: 1px solid var(--border);
-      padding: 0.9rem;
-      border-radius: 10px;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    .ticket-option-btn::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(0,255,255,0.2), transparent);
-      transition: left 0.6s;
-    }
-    .ticket-option-btn:hover::before {
-      left: 100%;
-    }
-    .ticket-option-btn:hover {
-      background: rgba(0, 255, 255, 0.1);
-      border-color: var(--electric-blue);
-      box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
-      transform: translateY(-2px);
-    }
-    #ticket-form input,
-    #ticket-form textarea {
-      outline: none;
-    }
-    #ticket-form input:focus,
-    #ticket-form textarea:focus {
-      border-color: var(--electric-blue);
-      box-shadow: 0 0 8px rgba(0, 255, 255, 0.4);
-    }
+    /* footer */
+    footer { background: rgba(10,10,10,0.92); text-align:center; padding:2.5rem; margin-top:4rem; border-top:1px solid var(--border); }
+
+    /* Modal base */
+    .modal { display:none; position:fixed; z-index:5000; left:0; top:0; width:100%; height:100%; background-color:rgba(0,0,0,0.92); backdrop-filter:blur(8px); justify-content:center; align-items:center; }
+    .modal-content { background:var(--gray); border:2px solid var(--electric-blue); border-radius:16px; padding:2rem; width:90%; max-width:500px; box-shadow:0 0 30px var(--electric-blue); position:relative; animation:modalPop .4s cubic-bezier(.175,.885,.32,1.275); }
+    @keyframes modalPop { 0%{ transform:scale(.8); opacity:0 } 100%{ transform:scale(1); opacity:1 } }
+    .close-btn { position:absolute; top:15px; right:20px; font-size:1.8rem; color:#fff; cursor:pointer; transition: color .3s, transform .2s; }
+    .close-btn:hover { color:var(--electric-blue); transform:rotate(90deg); }
+
+    /* ticket options */
+    .ticket-options { display:flex; flex-direction:column; gap:.9rem; }
+    .ticket-option-btn { background:var(--light-gray); color:white; border:1px solid var(--border); padding:.9rem; border-radius:10px; font-size:1rem; font-weight:600; cursor:pointer; transition:all .3s; text-align:center; position:relative; overflow:hidden; }
+    .ticket-option-btn::before { content:''; position:absolute; top:0; left:-100%; width:100%; height:100%; background:linear-gradient(90deg, transparent, rgba(0,255,255,0.2), transparent); transition:left .6s; }
+    .ticket-option-btn:hover::before { left:100%; }
+    .ticket-option-btn:hover { background:rgba(0,255,255,0.1); border-color:var(--electric-blue); box-shadow:0 0 15px rgba(0,255,255,0.4); transform:translateY(-2px); }
+    #ticket-form input, #ticket-form textarea { outline:none; }
+    #ticket-form input:focus, #ticket-form textarea:focus { border-color:var(--electric-blue); box-shadow:0 0 8px rgba(0,255,255,0.4); }
     .scan-line {
       display: block;
       position: absolute;
-      bottom: -5px;
-      left: 0;
-      width: 100%;
+      bottom: -6px;
+      left: 32%;           /* start 32% from the left of the header */
+      width: 33%;          /* shorter line so it doesn't cross the whole viewport */
       height: 2px;
       background: var(--electric-blue);
-      animation: scanLine 3s infinite;
+      border-radius: 2px;
+      box-shadow: 0 0 10px rgba(0, 234, 255, 0.9);
+      animation: scanLine 2.4s linear infinite;
+      opacity: 0.95;
+      pointer-events: none;
     }
+
+    /* Move from just outside the left edge of the line to just outside its right edge */
     @keyframes scanLine {
-      0% { transform: translateX(-100%); }
-      100% { transform: translateX(200%); }
+      0%   { transform: translateX(-110%); opacity: 0; }
+      10%  { opacity: 1; }
+      90%  { opacity: 1; }
+      100% { transform: translateX(110%); opacity: 0; }
+    }
+    /* Quota modal */
+    .quota-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); backdrop-filter:blur(8px); z-index:9999; justify-content:center; align-items:center; }
+    .quota-modal-content { background:var(--gray); border:2px solid var(--electric-blue); border-radius:16px; width:90%; max-width:700px; padding:2rem; box-shadow:0 0 30px var(--electric-blue); position:relative; }
+    .quota-modal h3 { text-align:center; margin-bottom:1.5rem; color:var(--electric-blue); font-size:1.8rem; }
+    .close-quota { position:absolute; top:1rem; right:1.2rem; font-size:1.8rem; color:#fff; cursor:pointer; }
+    .quota-tabs { display:flex; justify-content:center; gap:1rem; margin-bottom:1.5rem; }
+    .quota-tab-btn { padding:.6rem 1.2rem; background:rgba(255,255,255,0.1); border:1px solid var(--electric-blue); color:#fff; font-weight:600; border-radius:8px; cursor:pointer; transition:all .3s; }
+    .quota-tab-btn.active { background:var(--electric-blue); color:#000; }
+    .quota-tab-content { display:none; }
+    .quota-tab-content.active { display:block; }
+    .quota-form label { display:block; margin:.8rem 0 .4rem; font-weight:600; }
+    .quota-form input, .quota-form select, .quota-form textarea { width:100%; padding:.7rem; background:var(--light-gray); border:1px solid var(--border); color:white; border-radius:8px; }
+    .quota-form button { margin-top:1.2rem; width:100%; padding:.8rem; background:var(--electric-blue); color:#000; font-weight:bold; border:none; border-radius:8px; cursor:pointer; }
+
+    /* ===== Dossier inline login: reduced & centered inputs ===== */
+    .dossier-login {
+      display: flex;
+      justify-content: center;
+      padding: 6px 0 0 0;
+    }
+    .dossier-login-grid {
+      width: 100%;
+      max-width: 620px;
+      background: rgba(0,0,0,0.18);
+      padding: 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(0,255,255,0.06);
+      box-shadow: 0 8px 40px rgba(0,170,200,0.04);
+      display: block;
     }
 
-    footer {
-      background: rgba(10,10,10,0.92);
-      text-align: center;
-      padding: 2.5rem;
-      margin-top: 4rem;
-      border-top: 1px solid var(--border);
+    /* Each field stacks label above a centered, reduced input */
+    .dossier-login .field {
+      margin-bottom: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* center input horizontally */
+    }
+    .dossier-login .field label {
+      display: block;
+      font-weight: 700;
+      color: #cfeff0;
+      margin-bottom: 6px;
+      font-size: 0.95rem;
+      text-align: center; /* label centered to match inputs */
+    }
+    /* Reduced centered input */
+    .dossier-login .field input {
+      width: 68%;              /* reduced width */
+      max-width: 420px;       /* cap width */
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.06);
+      background: #0f0f10;
+      color: #fff;
+      outline: none;
+      transition: box-shadow 160ms ease, border-color 160ms ease;
+      display: block;
+      margin: 0 auto;         /* center */
+    }
+    .dossier-login .field input:focus {
+      border-color: #00eaff;
+      box-shadow: 0 6px 18px rgba(0,234,255,0.06);
     }
 
-    /* RESPONSIVE */
-    @media (max-width: 900px) {
-      .hierarchy-container { height: 600px; }
-      .leader { top: 10%; left: 15%; }
-      .co-leader { top: 10%; right: 15%; }
-      .frere-darme { top: 40%; left: 10%; }
-      .braqueur { top: 40%; right: 10%; }
-      .tueur { bottom: 10%; left: 15%; }
-      .p-dessai { bottom: 10%; right: 15%; }
-      .tenues-container { flex-direction: column; gap: 2rem; }
+    /* Buttons row (right aligned inside grid but overall centered block) */
+    .login-row, .login-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 6px;
     }
-    @media (max-width: 650px) {
-      .hierarchy-container { height: 700px; }
-      .hierarchy-node { font-size: 1rem; padding: 0.7rem 1rem; }
-      .zentys-logo { font-size: 2.3rem; }
-      h2 { font-size: 2rem; }
-      .grade-item,
-      .role-item,
-      .tenue-category { padding: 0.6rem 1rem; }
+    .dossier-login .login-btn, .dossier-login .cancel-btn {
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      min-height: 36px;
     }
+    .dossier-login .login-btn {
+      background: #00eaff;
+      color: #000;
+      border: 1px solid rgba(0,255,255,0.9);
+    }
+    .dossier-login .cancel-btn {
+      background: transparent;
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    /* inline error */
+    .dossier-login-error {
+      margin-top: 8px;
+      color: #ff9999;
+      font-size: 0.92rem;
+      display: block;
+      min-height: 1.2em;
+    }
+
+    /* QUOTA list restored appearance */
+    .quota-list { max-height: 360px; overflow: auto; padding: 8px; display: flex; flex-direction: column; gap: 10px; }
+    .quota-entry { padding: 12px; background: rgba(255,255,255,0.03); border-left: 3px solid var(--electric-blue); border-radius: 8px; color: #e9eef0; }
+    .quota-entry small { color: #bfc7c7; display: block; margin-top: 8px; }
+    .quota-list::-webkit-scrollbar { width: 12px; }
+    .quota-list::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); border-radius: 8px; }
+    .quota-list::-webkit-scrollbar-thumb { background: rgba(0,255,255,0.12); border-radius: 8px; }
+    .quota-entry strong { color: var(--electric-blue); }
+
+    /* RESPONSIVE tweak: make dossier inputs larger on small screens for usability */
+    @media (max-width: 600px) {
+      .dossier-login .field input { width: 90%; max-width: none; }
+      .dossier-login .field label { text-align: left; width: 90%; }
+      .dossier-login-grid { padding: 12px; }
+    }
+
+    /* MEDIA QUERIES */
+    @media (max-width: 768px) {
+      h1 { font-size: 2.8rem !important; padding: 0 1rem; }
+      h2 { font-size: 1.8rem !important; }
+      .logo { font-size: 2rem !important; }
+      nav a { margin-left: 1rem; font-size: 0.95rem; }
+      section { padding: 5rem 5% !important; }
+      .hierarchy-container { height: auto !important; padding: 2rem 0 !important; }
+      .hierarchy-node { font-size: 0.9rem !important; padding: 0.6rem !important; min-width: 100px; }
+      .zentys-logo { font-size: 1.8rem !important; }
+      .grades-grid, .role-column, .immat-full-grid, .vehicles-grid { grid-template-columns: 1fr !important; gap: 1.2rem !important; }
+      .tenues-container { flex-direction: column !important; align-items: center !important; gap: 2rem !important; }
+      .tenue-column { max-width: 100% !important; padding: 0 1rem; }
+      .vehicle-card img { height: 100px !important; }
+      .vehicle-card h4 { font-size: 1rem !important; }
+      footer { padding: 1.5rem !important; font-size: 0.9rem; }
+      .quota-modal-content { padding: 12px; }
+      .dossier-login-grid { max-width: 100%; padding: 12px; }
+    }
+    @media (max-width: 480px) {
+      h1 { font-size: 2.3rem !important; }
+      h2 { font-size: 1.6rem !important; }
+      .logo { font-size: 1.8rem !important; }
+      nav { display: flex; flex-wrap: wrap; justify-content: center; }
+      nav a { margin: 0.3rem 0.6rem; }
+    }
+
+    /* accessibility: hide pointer events when aria-hidden */
+    [aria-hidden="true"] { pointer-events: none; }
   </style>
 </head>
 <body>
@@ -640,12 +403,11 @@
         Discipline. Loyauté. Immatriculés. Une seule loi : la nôtre.
       </p>
     </section>
-
     <!-- HIÉRARCHIE -->
     <section id="hierarchy">
       <h2>HIÉRARCHIE</h2>
       <div class="hierarchy-container">
-        <svg class="hierarchy-svg" viewBox="0 0 500 500" width="100%" height="100%">
+        <svg class="hierarchy-svg" viewBox="0 0 500 500" preserveAspectRatio="xMidYMid meet" width="100%" height="100%">
           <defs>
             <filter id="electric-glow">
               <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur"/>
@@ -672,7 +434,6 @@
         <div class="zentys-logo">ZENTYS</div>
       </div>
     </section>
-
     <!-- GRADES -->
     <section id="grades">
       <h2>GRADES</h2>
@@ -686,7 +447,9 @@
         <div class="grade-item">
           <div class="grade-title">CO-LEAD</div>
           <div class="members-list">
-            <div class="member-item"><span class="immat-badge">16</span> Mathieu Driven</div>
+            <div class="member-item">
+              <span class="immat-badge">16</span> Mathieu Driven
+            </div>
           </div>
         </div>
         <div class="grade-item">
@@ -712,7 +475,6 @@
         </div>
       </div>
     </section>
-
     <!-- RÔLES -->
     <section id="roles">
       <h2>RÔLES</h2>
@@ -761,7 +523,6 @@
         </div>
       </div>
     </section>
-
     <!-- IMMATRICULES -->
     <section id="immatricules">
       <h2>IMMATRICULES COMPLETS (01-29)</h2>
@@ -788,7 +549,6 @@
         </div>
       </div>
     </section>
-
     <!-- VÉHICULES -->
     <section id="vehicles">
       <h2>VÉHICULES</h2>
@@ -820,14 +580,12 @@
         </div>
       </div>
     </section>
-
     <!-- TENUES -->
     <section id="tenues">
       <h2>TENUES</h2>
       <div class="tenues-container">
         <div class="tenue-column">
           <h3 style="text-align: center; margin-bottom: 1rem; font-size: 1.5rem; color: var(--white);">Tenue Homme</h3>
-          <!-- Répété pour concision — tu peux garder les mêmes blocs que dans ton original -->
           <div class="tenue-category">
             <div class="tenue-category-title">Masque</div>
             <div class="tenue-item">
@@ -1016,7 +774,6 @@
         </div>
         <div class="tenue-column">
           <h3 style="text-align: center; margin-bottom: 1rem; font-size: 1.5rem; color: var(--white);">Tenue Femme</h3>
-          <!-- Identique à Homme -->
           <div class="tenue-category">
             <div class="tenue-category-title">Masque</div>
             <div class="tenue-item">
@@ -1205,9 +962,7 @@
         </div>
       </div>
     </section>
-
-    <!-- Contact -->
-    <!-- Contact -->
+    <!-- CONTACT -->
     <section id="contact">
       <h2>CONTACT</h2>
       <div class="contact-section">
@@ -1215,13 +970,15 @@
         <a href="https://discord.gg/votre-lien" target="_blank" class="discord-btn">
           <i class="fab fa-discord"></i> Rejoindre le Discord
         </a>
-        <!-- BOUTON TICKET AJOUTÉ -->
         <p><button id="open-ticket-btn" class="discord-btn" style="background: #00ffff; color: #000; margin-top: 0.8rem;">
           <i class="fas fa-ticket-alt"></i> Ouvrir un ticket
         </button></p>
-        <p><i class="fas fa-phone"></i> <a href="tel:+33612345678" style="color:#fff; text-decoration: none;">+33 6 12 34 56 78</a></p>
+        <p>
+          <button id="secret-btn" class="discord-btn" style="background:#00eaff; color:#000; margin-top: 0.4rem;">
+            <i class="fas fa-upload"></i> Envoyer Un Quota
+          </button>
+        </p>
       </div>
-
       <!-- MODALE TICKET -->
       <div id="ticket-modal" class="modal">
         <div class="modal-content">
@@ -1230,41 +987,34 @@
             Ouvrir un ticket
             <span class="scan-line"></span>
           </h3>
-          
           <div class="ticket-options">
             <button class="ticket-option-btn" data-type="rejoindre">Rejoindre l'organisation</button>
             <button class="ticket-option-btn" data-type="blanchiment">Question sur le blanchiment</button>
             <button class="ticket-option-btn" data-type="coop">Proposer une coopération</button>
             <button class="ticket-option-btn" data-type="autre">Autre</button>
           </div>
-
           <form id="ticket-form" style="display: none; margin-top: 1.5rem; color: #eee;">
             <p id="form-title" style="text-align: center; color: #aaa; margin-bottom: 1.2rem;"></p>
-
             <div style="margin-bottom: 1rem;">
               <label style="display: block; margin-bottom: 0.4rem; font-weight: 600;">Nom / Prénom :</label>
               <input type="text" id="ticket-name" placeholder="Ex: Jean Dupont" required
                 style="width: 100%; padding: 0.7rem; border-radius: 8px; background: var(--gray); color: white; border: 1px solid var(--border);">
             </div>
-
             <div style="margin-bottom: 1rem;">
               <label style="display: block; margin-bottom: 0.4rem; font-weight: 600;">Pseudo Discord :</label>
               <input type="text" id="ticket-discord" placeholder="Ex: Jean#1234 ou @Jean" required
                 style="width: 100%; padding: 0.7rem; border-radius: 8px; background: var(--gray); color: white; border: 1px solid var(--border);">
             </div>
-
             <div style="margin-bottom: 1rem;">
               <label style="display: block; margin-bottom: 0.4rem; font-weight: 600;">Disponibilité (si RDV nécessaire) :</label>
               <input type="text" id="ticket-availability" placeholder="Ex: Soirée, Week-end..."
                 style="width: 100%; padding: 0.7rem; border-radius: 8px; background: var(--gray); color: white; border: 1px solid var(--border);">
             </div>
-
             <div style="margin-bottom: 1.2rem;">
               <label style="display: block; margin-bottom: 0.4rem; font-weight: 600;">Détails de votre demande :</label>
               <textarea id="ticket-message" placeholder="Décrivez clairement votre requête (min. 10 caractères)..." rows="4" required
                 style="width: 100%; padding: 0.8rem; border-radius: 8px; background: var(--gray); color: white; border: 1px solid var(--border); resize: vertical;"></textarea>
             </div>
-
             <div style="text-align: center;">
               <button type="submit" class="discord-btn" style="padding: 0.7rem 1.8rem; font-size: 1rem; background: #5865F2; color: white;">
                 <i class="fas fa-paper-plane"></i> Envoyer le ticket
@@ -1273,158 +1023,570 @@
           </form>
         </div>
       </div>
+      <!-- MODAL QUOTA -->
+      <div id="quota-modal" class="quota-modal" aria-hidden="true">
+        <div class="quota-modal-content" role="dialog" aria-modal="true">
+          <span class="close-quota">&times;</span>
+          <h3 style="text-align:center; color:var(--electric-blue); margin-bottom:10px;">Gestion des Quotas — Mathieu Driven</h3>
+
+          <div class="quota-tabs">
+            <button class="quota-tab-btn" data-tab="rajout" id="tab-btn-rajout">Rajout</button>
+            <button class="quota-tab-btn" data-tab="dossier" id="tab-btn-dossier">Dossier</button>
+          </div>
+
+          <div id="tab-rajout" class="quota-tab-content">
+            <form id="quota-form" style="max-width:520px; margin:0 auto;">
+              <label for="quota-categorie">Catégorie</label>
+              <select id="quota-categorie" required style="width:100%; padding:8px; margin-top:6px; background:var(--light-gray); color:#fff; border:1px solid var(--border); border-radius:8px;">
+                <option value="">-- Sélectionner --</option>
+                <option value="Drogue">Drogue</option>
+                <option value="Go-Fast">Go-Fast</option>
+                <option value="Donneur">Donneur</option>
+              </select>
+              <label for="quota-nom" style="display:block; margin-top:10px;">Nom</label>
+              <input type="text" id="quota-nom" placeholder="Ex: Jean Dupont" required style="width:100%; padding:8px; margin-top:6px; background:var(--light-gray); color:#fff; border:1px solid var(--border); border-radius:8px;">
+              <label for="quota-valeur" style="display:block; margin-top:10px;">Quota</label>
+              <input type="number" id="quota-valeur" placeholder="Ex: 500000" min="0" required style="width:100%; padding:8px; margin-top:6px; background:var(--light-gray); color:#fff; border:1px solid var(--border); border-radius:8px;">
+              <button type="submit" style="margin-top:12px; width:100%; padding:10px; background:var(--electric-blue); color:#000; font-weight:bold; border:none; border-radius:8px; cursor:pointer;">Envoyer le quota</button>
+            </form>
+          </div>
+
+          <div id="tab-dossier" class="quota-tab-content">
+            <!-- Login inline (amélioré) -->
+            <div id="dossier-login" class="dossier-login" style="display:block;">
+              <div class="dossier-login-grid">
+                <div class="field">
+                  <label for="dossier-login-user">Utilisateur</label>
+                  <input id="dossier-login-user" type="text" placeholder="Pseudo" autocomplete="username" />
+                </div>
+                <div class="field">
+                  <label for="dossier-login-pass">Mot de passe</label>
+                  <input id="dossier-login-pass" type="password" placeholder="Mot de passe" autocomplete="current-password" />
+                </div>
+                <div class="login-row">
+                  <button id="dossier-login-cancel" class="cancel-btn">Annuler</button>
+                  <button id="dossier-login-submit" class="login-btn">Se connecter</button>
+                </div>
+                <div id="dossier-login-error" class="dossier-login-error" aria-live="polite"></div>
+              </div>
+            </div>
+
+            <!-- Liste du dossier (après connexion) -->
+            <div id="dossier-list" style="display:none; margin-top:12px;">
+              <div class="quota-list" id="quota-list-container">
+                <p style="text-align:center; color:#888;">Aucun quota enregistré.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
   </main>
-
   <footer>
     <p>&copy; 2025 ZENTYS • Organisation GTA RP • Tous droits réservés</p>
   </footer>
 
+  <!-- ✅ SCRIPT PRINCIPAL CORRIGÉ -->
   <script>
-    // Smooth scroll + logo
-    document.getElementById('logo-top').addEventListener('click', function() {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-    document.querySelectorAll('a[href^="#"]:not(.discord-btn)').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        window.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' });
-      });
-    });
+    // Full JavaScript (complete) — Supabase init, quota modal with Rajout default and inline Dossier login,
+    // Rajout works without login, Dossier shows inline login inside modal (or global login modal fallback).
+    document.addEventListener('DOMContentLoaded', function () {
+      // === CONFIG SUPABASE ===
+      let supabase = null;
+      const supabaseUrl = 'https://modawwgnddvqtqpcbhjt.supabase.co';
+      const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1vZGF3d2duZGR2cXRxcGNiaGp0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEyMDYzMzEsImV4cCI6MjA3Njc4MjMzMX0.PXxrO_qeSosMVsvupmpAtZZhdGxihmg2STMMgOjkR6Q';
 
-    // Effet hiérarchie
-    setInterval(() => {
-      const nodes = document.querySelectorAll('.hierarchy-node');
-      nodes.forEach(node => {
-        if (Math.random() > 0.7) {
-          node.style.boxShadow = `0 0 25px ${getRandomColor()}, 0 0 10px #fff`;
-          setTimeout(() => {
-            node.style.boxShadow = `0 0 18px ${getRandomColor()}, 0 0 8px #fff2`;
-          }, 300);
-        }
-      });
-    }, 2000);
-    function getRandomColor() {
-      return ['#00ffff', '#00eaff', '#00ccff'][Math.floor(Math.random() * 3)];
-    }
-
-    // === MODALE TICKET ===
-    const modal = document.getElementById('ticket-modal');
-    const openBtn = document.getElementById('open-ticket-btn');
-    const closeBtn = document.querySelector('.close-btn');
-    const optionBtns = document.querySelectorAll('.ticket-option-btn');
-    const ticketForm = document.getElementById('ticket-form');
-    const formTitle = document.getElementById('form-title');
-
-    if (openBtn) {
-      openBtn.addEventListener('click', () => {
-        modal.style.display = 'flex';
-      });
-    }
-
-    if (closeBtn) {
-      closeBtn.addEventListener('click', () => {
-        modal.style.display = 'none';
-        ticketForm.style.display = 'none';
-        ticketForm.reset();
-      });
-    }
-
-    // 🔒 Empêche fermeture par clic extérieur
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) {
-        e.stopPropagation();
-      }
-    });
-
-    optionBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const type = btn.dataset.type;
-        let title = '';
-        switch(type) {
-          case 'rejoindre': title = "Demande : Rejoindre ZENTYS"; break;
-          case 'blanchiment': title = "Demande : Blanchiment d'argent"; break;
-          case 'coop': title = "Demande : Coopération avec ZENTYS"; break;
-          case 'autre': title = "Autre demande"; break;
-        }
-        formTitle.textContent = title;
-        ticketForm.style.display = 'block';
-      });
-    });
-
-    if (ticketForm) {
-      ticketForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        
-        const name = document.getElementById('ticket-name').value.trim();
-        const discord = document.getElementById('ticket-discord').value.trim();
-        const availability = document.getElementById('ticket-availability').value.trim();
-        const message = document.getElementById('ticket-message').value.trim();
-        const type = formTitle.textContent.replace('Demande : ', '');
-
-        // Validation Nom : espace requis
-        if (!name || !name.includes(' ')) {
-          alert('❌ Votre nom doit inclure un prénom et un nom (ex: Jean Dupont).');
-          return;
-        }
-
-        // Validation Discord : # ou @ requis
-        if (!discord || (!discord.includes('#') && !discord.includes('@'))) {
-          alert('❌ Votre pseudo Discord doit contenir "@" ou "#".\nEx: @Jean ou Jean#1234');
-          return;
-        }
-
-        // Validation disponibilité (si remplie)
-        if (availability && availability.length < 2) {
-          alert('❌ La disponibilité doit faire au moins 2 caractères.');
-          return;
-        }
-
-        // Validation message
-        if (!message || message.length < 10) {
-          alert('❌ Veuillez décrire votre demande en au moins 10 caractères.');
-          return;
-        }
-
-        // 🔴 REMPLACE PAR TON WEBHOOK DISCORD
-        const webhookURL = "https://discord.com/api/webhooks/1430617383932002415/gfdLg-FVXugleYjSw6rgdoOFDg6B1alnPwJpQOBFyQN_R5soZ0X6ylx72sX35ii0rosZ";
-
-        const embed = {
-          title: `📨 Nouveau ticket : ${type}`,
-          color: 0x00ffff,
-          fields: [
-            { name: '👤 Nom complet', value: name, inline: true },
-            { name: '💬 Discord', value: discord, inline: true },
-            { name: '🕒 Disponibilité', value: availability || 'Non précisée', inline: false },
-            { name: '📄 Détails', value: message, inline: false }
-          ],
-          timestamp: new Date().toISOString(),
-          footer: { text: "ZENTYS - Système de tickets" }
-        };
-
+      function initSupabase() {
+        const createClientFn =
+          (window.Supabase && window.Supabase.createClient) ||
+          (window.supabase && window.supabase.createClient) ||
+          (window.createClient) ||
+          null;
+        if (!createClientFn) return null;
         try {
-          const response = await fetch(webhookURL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ embeds: [embed] })
-          });
-
-          if (response.ok) {
-            alert(`✅ Ticket envoyé avec succès !\n\nNous vous contacterons bientôt sur Discord.\n\nMerci de votre confiance.`);
-          } else {
-            alert('❌ Erreur lors de l’envoi. Veuillez réessayer plus tard.');
-          }
+          return createClientFn(supabaseUrl, supabaseAnonKey);
         } catch (err) {
-          alert('❌ Impossible d’envoyer le ticket. Vérifiez votre connexion.');
-          console.error('Erreur réseau:', err);
+          console.error("Erreur durant l'initialisation Supabase :", err);
+          return null;
         }
+      }
+      supabase = initSupabase();
 
-        modal.style.display = 'none';
-        ticketForm.reset();
-        ticketForm.style.display = 'none';
+      // quick test (non blocking)
+      (async function testSupabaseConnection() {
+        if (!supabase) return;
+        try {
+          const { error } = await supabase.from('Quota').select('id').limit(1);
+          if (error) console.error('Test Supabase select Quota error:', error);
+        } catch (e) {
+          console.error('Erreur test Supabase:', e);
+        }
+      })();
+
+      // === STATE & ELEMENTS ===
+      let currentUser = null; // { id, user }
+      const quotaModal = document.getElementById('quota-modal');
+      const secretBtn = document.getElementById('secret-btn');
+      const closeQuota = document.querySelector('.close-quota');
+      const quotaForm = document.getElementById('quota-form');
+      const quotaListContainer = document.getElementById('quota-list-container');
+
+      // inline dossier login elements (may or may not exist depending on HTML)
+      const dossierLogin = document.getElementById('dossier-login');
+      const dossierLoginUser = document.getElementById('dossier-login-user');
+      const dossierLoginPass = document.getElementById('dossier-login-pass');
+      const dossierLoginSubmit = document.getElementById('dossier-login-submit');
+      const dossierLoginCancel = document.getElementById('dossier-login-cancel');
+      const dossierLoginError = document.getElementById('dossier-login-error');
+      const dossierListWrapper = document.getElementById('dossier-list');
+
+      // global login modal will be injected only if inline dossier login is not present
+      function injectGlobalLoginIfNeeded() {
+        if (document.getElementById('dossier-login')) return; // inline present -> no global needed
+        if (document.getElementById('login-modal')) return; // already injected
+        const html = `
+          <div id="login-modal" aria-hidden="true" style="display:none; position:fixed; inset:0; z-index:12000; justify-content:center; align-items:center; background:rgba(0,0,0,0.6);">
+            <div class="login-card" role="dialog" aria-modal="true" style="width:340px; background:#0f0f10; border:2px solid rgba(0,255,255,0.95); padding:20px; border-radius:12px; color:#fff; position:relative;">
+              <div class="close-x" id="login-close" title="Fermer" style="position:absolute; right:10px; top:8px; cursor:pointer; font-size:18px; color:#fff;">&times;</div>
+              <h3 style="text-align:center; color:#00ffff; margin-bottom:12px;">Connexion — Dossier</h3>
+              <label for="login-user" style="display:block; margin-top:8px; color:#cfcfcf; font-weight:600;">Utilisateur</label>
+              <input id="login-user" type="text" placeholder="Votre pseudo" autocomplete="username" style="width:100%; padding:10px; margin-top:6px; border-radius:8px; border:1px solid rgba(255,255,255,0.06); background:#151515; color:#fff;" />
+              <label for="login-pass" style="display:block; margin-top:8px; color:#cfcfcf; font-weight:600;">Mot de passe</label>
+              <input id="login-pass" type="password" placeholder="Mot de passe" autocomplete="current-password" style="width:100%; padding:10px; margin-top:6px; border-radius:8px; border:1px solid rgba(255,255,255,0.06); background:#151515; color:#fff;" />
+              <div class="login-actions" style="display:flex; gap:10px; margin-top:12px; justify-content:space-between; align-items:center;">
+                <button class="cancel-btn" id="login-cancel" style="background:transparent; color:#fff; border:1px solid rgba(255,255,255,0.08); padding:8px 12px; border-radius:8px; cursor:pointer;">Annuler</button>
+                <button class="login-btn" id="login-submit" style="background:#00ffff; color:#000; border:none; padding:9px 14px; border-radius:8px; font-weight:700; cursor:pointer;">Se connecter</button>
+              </div>
+              <div class="login-error" id="login-error" style="color:#ff9999; margin-top:8px; font-size:0.9rem; display:none;"></div>
+            </div>
+          </div>
+        `;
+        const wrapper = document.createElement('div');
+        wrapper.innerHTML = html;
+        document.body.appendChild(wrapper.firstElementChild);
+        // attach handlers
+        document.getElementById('login-close').addEventListener('click', () => {
+          const modal = document.getElementById('login-modal'); if (modal) modal.style.display = 'none';
+        });
+        document.getElementById('login-cancel').addEventListener('click', () => {
+          const modal = document.getElementById('login-modal'); if (modal) modal.style.display = 'none';
+        });
+        document.getElementById('login-submit').addEventListener('click', async (e) => {
+          e.preventDefault();
+          await handleGlobalLoginSubmit();
+        });
+        document.getElementById('login-pass').addEventListener('keydown', function(ev){
+          if (ev.key === 'Enter') handleGlobalLoginSubmit();
+        });
+      }
+
+      // If inline not present, ensure global is available for fallback
+      injectGlobalLoginIfNeeded();
+
+      // === UI helpers (toasts / error) ===
+      function showToast(message, opts = {}) {
+        const containerId = 'app-toasts';
+        let container = document.getElementById(containerId);
+        if (!container) {
+          container = document.createElement('div');
+          container.id = containerId;
+          container.style.position = 'fixed';
+          container.style.right = '18px';
+          container.style.bottom = '18px';
+          container.style.zIndex = '12000';
+          container.style.display = 'flex';
+          container.style.flexDirection = 'column';
+          container.style.gap = '10px';
+          document.body.appendChild(container);
+        }
+        const toast = document.createElement('div');
+        toast.style.pointerEvents = 'auto';
+        toast.style.minWidth = '180px';
+        toast.style.maxWidth = '360px';
+        toast.style.background = 'linear-gradient(180deg, rgba(18,18,18,0.98), rgba(12,12,12,0.98))';
+        toast.style.color = '#eaffff';
+        toast.style.padding = '10px 12px';
+        toast.style.borderRadius = '10px';
+        toast.style.borderLeft = opts.type === 'success' ? '4px solid #00ffde' : '4px solid #66d6ff';
+        toast.style.fontWeight = '700';
+        toast.style.boxShadow = '0 8px 30px rgba(0,170,200,0.06)';
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(6px)';
+        toast.textContent = message;
+        container.appendChild(toast);
+        requestAnimationFrame(() => {
+          toast.style.transition = '240ms';
+          toast.style.opacity = '1';
+          toast.style.transform = 'translateY(0)';
+        });
+        setTimeout(() => {
+          toast.style.opacity = '0';
+          toast.style.transform = 'translateY(6px)';
+          setTimeout(() => { try { container.removeChild(toast); } catch (e) {} }, 260);
+        }, opts.duration || 3000);
+      }
+
+      function showErrorModal(title, message) {
+        // simple: toast + console
+        showToast(`${title}: ${message}`, { type: 'info', duration: 4500 });
+        console.error(title, message);
+      }
+
+      // === AUTH: global handler (if global login modal is used) ===
+      async function authenticateUser(username, password) {
+        if (!supabase) return { ok:false, message:'Supabase non initialisé' };
+        try {
+          const cleaned = String(username || '').trim();
+          const res = await supabase
+            .from('Compte')
+            .select('id, user, password')
+            .ilike('user', cleaned)
+            .limit(1)
+            .maybeSingle();
+          if (res && res.error) return { ok:false, message: res.error.message || 'Erreur lecture Compte' };
+          if (!res || !res.data) return { ok:false, message:'Utilisateur introuvable' };
+          const row = res.data;
+          if (String(row.password) === String(password)) return { ok:true, user:{ id: row.id, user: row.user } };
+          return { ok:false, message:'Mot de passe invalide' };
+        } catch (err) {
+          console.error('authenticateUser exception:', err);
+          return { ok:false, message: err.message || 'Erreur réseau' };
+        }
+      }
+
+      async function handleGlobalLoginSubmit() {
+        const userInput = document.getElementById('login-user');
+        const passInput = document.getElementById('login-pass');
+        const errEl = document.getElementById('login-error');
+        if (!userInput || !passInput || !errEl) return;
+        const username = userInput.value.trim();
+        const password = passInput.value;
+        if (!username || !password) {
+          errEl.textContent = 'Merci de renseigner utilisateur et mot de passe.';
+          errEl.style.display = 'block';
+          return;
+        }
+        errEl.style.display = 'none';
+        const btn = document.getElementById('login-submit');
+        btn.disabled = true;
+        btn.textContent = 'Connexion...';
+        const res = await authenticateUser(username, password);
+        btn.disabled = false;
+        btn.textContent = 'Se connecter';
+        if (!res.ok) {
+          errEl.textContent = res.message || 'Erreur d\'authentification';
+          errEl.style.display = 'block';
+          return;
+        }
+        currentUser = res.user;
+        // hide global modal
+        const modal = document.getElementById('login-modal'); if (modal) modal.style.display = 'none';
+        showToast(`Connecté · ${currentUser.user}`, { type: 'success', duration: 2200 });
+        // show dossier content in quota modal if present
+        if (quotaModal) quotaModal.style.display = 'flex';
+        // activate dossier tab and load data
+        document.querySelectorAll('.quota-tab-btn').forEach(b => b.classList.remove('active'));
+        const dossierBtn = document.querySelector('.quota-tab-btn[data-tab="dossier"]');
+        if (dossierBtn) dossierBtn.classList.add('active');
+        document.querySelectorAll('.quota-tab-content').forEach(c => c.classList.remove('active'));
+        document.getElementById('tab-dossier')?.classList.add('active');
+        await loadQuotaData();
+      }
+
+      // === INLINE AUTH (if dossier-login exists inside modal) ===
+      async function authenticateInline(username, password) {
+        if (!supabase) return { ok:false, message:'Supabase non initialisé' };
+        try {
+          const cleaned = String(username || '').trim();
+          const res = await supabase
+            .from('Compte')
+            .select('id, user, password')
+            .ilike('user', cleaned)
+            .limit(1)
+            .maybeSingle();
+          if (res && res.error) return { ok:false, message: res.error.message || 'Erreur lecture Compte' };
+          if (!res || !res.data) return { ok:false, message:'Utilisateur introuvable' };
+          const row = res.data;
+          if (String(row.password) === String(password)) return { ok:true, user:{ id: row.id, user: row.user } };
+          return { ok:false, message:'Mot de passe invalide' };
+        } catch (err) {
+          console.error('authenticateInline exception:', err);
+          return { ok:false, message: err.message || 'Erreur réseau' };
+        }
+      }
+
+      if (dossierLoginSubmit) {
+        dossierLoginSubmit.addEventListener('click', async (ev) => {
+          ev.preventDefault();
+          const u = (dossierLoginUser?.value || '').trim();
+          const p = dossierLoginPass?.value || '';
+          if (!u || !p) {
+            if (dossierLoginError) { dossierLoginError.textContent = 'Remplis les deux champs.'; dossierLoginError.style.display = 'block'; }
+            return;
+          }
+          dossierLoginSubmit.disabled = true;
+          dossierLoginSubmit.textContent = 'Connexion...';
+          const res = await authenticateInline(u, p);
+          dossierLoginSubmit.disabled = false;
+          dossierLoginSubmit.textContent = 'Se connecter';
+          if (!res.ok) {
+            if (dossierLoginError) { dossierLoginError.textContent = res.message || 'Erreur'; dossierLoginError.style.display = 'block'; }
+            return;
+          }
+          currentUser = res.user;
+          if (dossierLogin) dossierLogin.style.display = 'none';
+          if (dossierListWrapper) dossierListWrapper.style.display = 'block';
+          showToast(`Connecté · ${currentUser.user}`, { type: 'success', duration: 2200 });
+          await loadQuotaData();
+        });
+      }
+      if (dossierLoginCancel) {
+        dossierLoginCancel.addEventListener('click', (e) => {
+          e.preventDefault();
+          // go back to Rajout
+          activateTab('rajout');
+        });
+      }
+
+      // === TAB HANDLING ===
+      const tabButtons = document.querySelectorAll('.quota-tab-btn');
+      function activateTab(name) {
+        tabButtons.forEach(b => b.classList.toggle('active', b.dataset.tab === name));
+        document.querySelectorAll('.quota-tab-content').forEach(c => {
+          c.classList.toggle('active', c.id === 'tab-' + name);
+        });
+      }
+
+      // attach tab listeners (if present)
+      tabButtons.forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const tab = btn.dataset.tab;
+          activateTab(tab);
+          if (tab === 'dossier') {
+            // prefer inline login if present
+            if (dossierLogin) {
+              // if not authenticated, show inline login; else show list
+              if (!currentUser) {
+                dossierLogin.style.display = 'block';
+                if (dossierListWrapper) dossierListWrapper.style.display = 'none';
+                if (dossierLoginError) dossierLoginError.style.display = 'none';
+                dossierLoginUser?.focus();
+              } else {
+                if (dossierLogin) dossierLogin.style.display = 'none';
+                if (dossierListWrapper) dossierListWrapper.style.display = 'block';
+                await loadQuotaData();
+              }
+            } else {
+              // fallback to global modal login
+              injectGlobalLoginIfNeeded();
+              showGlobalLoginModal();
+            }
+          } else {
+            // Rajout -> focus first field
+            setTimeout(() => document.getElementById('quota-nom')?.focus(), 60);
+          }
+        });
       });
-    }
+
+      function showGlobalLoginModal(message) {
+        const modal = document.getElementById('login-modal');
+        if (!modal) { injectGlobalLoginIfNeeded(); }
+        const mm = document.getElementById('login-modal');
+        if (!mm) return;
+        mm.style.display = 'flex';
+        if (message) {
+          const err = document.getElementById('login-error');
+          if (err) { err.textContent = message; err.style.display = 'block'; }
+        }
+      }
+
+      // === OPEN / CLOSE QUOTA MODAL ===
+      secretBtn?.addEventListener('click', () => {
+        if (!quotaModal) return;
+        quotaModal.style.display = 'flex';
+        quotaModal.setAttribute('aria-hidden', 'false');
+        activateTab('rajout'); // show Rajout by default
+        // hide inline login/list initially
+        if (dossierLogin) dossierLogin.style.display = 'none';
+        if (dossierListWrapper) dossierListWrapper.style.display = 'none';
+      });
+
+      closeQuota?.addEventListener('click', () => {
+        if (!quotaModal) return;
+        quotaModal.style.display = 'none';
+        quotaModal.setAttribute('aria-hidden', 'true');
+      });
+
+      // close modal on outside click
+      quotaModal?.addEventListener('click', (e) => {
+        if (e.target === quotaModal) {
+          quotaModal.style.display = 'none';
+          quotaModal.setAttribute('aria-hidden','true');
+        }
+      });
+
+      // === QUOTA FORM SUBMIT (Rajout) ===
+      quotaForm?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!supabase) { showErrorModal('Erreur', 'Supabase non disponible.'); return; }
+        const nom = document.getElementById('quota-nom')?.value.trim() || '';
+        const categorie = document.getElementById('quota-categorie')?.value || '';
+        let quotaRaw = (document.getElementById('quota-valeur')?.value || '').toString().trim();
+        if (!nom || !categorie || !quotaRaw) {
+          if (!nom) document.getElementById('quota-nom')?.focus();
+          else if (!categorie) document.getElementById('quota-categorie')?.focus();
+          else document.getElementById('quota-valeur')?.focus();
+          return;
+        }
+        const normalized = quotaRaw.replace(/\s/g,'').replace(',', '.');
+        const parsed = Number(normalized);
+        if (isNaN(parsed)) { showErrorModal('Valeur invalide','Valeur du quota invalide.'); return; }
+        const rounded = Math.round(parsed);
+        const quotaToStore = `${rounded} €`;
+        const nowForDB = (function() {
+          const d = new Date();
+          const day = String(d.getDate()).padStart(2,'0');
+          const month = String(d.getMonth()+1).padStart(2,'0');
+          const year = String(d.getFullYear()).slice(-2);
+          const hh = String(d.getHours()).padStart(2,'0');
+          const mm = String(d.getMinutes()).padStart(2,'0');
+          return `${day}/${month}/${year} à ${hh}h${mm}`;
+        })();
+        const payload = [{ nom, categorie, quota: quotaToStore, temps: nowForDB }];
+        try {
+          const { data, error } = await supabase.from('Quota').insert(payload).select();
+          if (error) { console.error('Erreur Supabase insertion:', error); showErrorModal('Erreur enregistrement', error.message || 'Erreur'); return; }
+          showToast('Quota enregistré', { type: 'success', duration: 2000 });
+          quotaForm.reset();
+          if (currentUser) await loadQuotaData();
+        } catch (err) {
+          console.error('Exception insertion quota:', err);
+          showErrorModal('Erreur réseau', 'Impossible d\'enregistrer le quota (voir console).');
+        }
+      });
+
+      // === LOAD QUOTA DATA (fills quota-list-container) ===
+      async function loadQuotaData() {
+        if (!supabase) { showErrorModal('Erreur', 'Supabase indisponible.'); if (quotaListContainer) quotaListContainer.innerHTML = '<p style="text-align:center;color:#f66;">Erreur</p>'; return; }
+        if (!currentUser) { if (quotaListContainer) quotaListContainer.innerHTML = '<p style="text-align:center;color:#888;">Veuillez vous connecter.</p>'; return; }
+        if (quotaListContainer) quotaListContainer.innerHTML = '<p style="text-align:center;color:#aaa;">Chargement...</p>';
+        try {
+          const { data, error } = await supabase.from('Quota').select('*').order('id', { ascending: false });
+          if (error) { console.error('loadQuotaData error', error); if (quotaListContainer) quotaListContainer.innerHTML = `<p style="text-align:center;color:#f66;">${error.message}</p>`; return; }
+          if (!data || data.length === 0) { if (quotaListContainer) quotaListContainer.innerHTML = '<p style="text-align:center;color:#888;">Aucun quota enregistré.</p>'; return; }
+          // render simple dropdown style
+          quotaListContainer.innerHTML = '';
+          data.forEach(q => {
+            const el = document.createElement('div');
+            el.className = 'quota-entry';
+            const quotaText = q.quota ?? '';
+            const tempsText = q.temps ?? '';
+            el.innerHTML = `<strong>${q.categorie || ''}</strong> — ${q.nom || ''}<br><small>Quota : ${quotaText} • ${tempsText}</small>`;
+            quotaListContainer.appendChild(el);
+          });
+        } catch (err) {
+          console.error('Exception loadQuotaData', err);
+          showErrorModal('Erreur réseau', 'Impossible de charger le dossier (voir console).');
+          if (quotaListContainer) quotaListContainer.innerHTML = '<p style="text-align:center;color:#f66;">Erreur réseau</p>';
+        }
+      }
+
+      // === Ticket modal logic (unchanged) ===
+      (function ticketModalSetup() {
+        const modal = document.getElementById('ticket-modal');
+        const openBtn = document.getElementById('open-ticket-btn');
+        const closeBtn = document.querySelector('.close-btn');
+        const optionBtns = document.querySelectorAll('.ticket-option-btn');
+        const ticketFormEl = document.getElementById('ticket-form');
+        const formTitle = document.getElementById('form-title');
+
+        openBtn?.addEventListener('click', () => { if (modal) modal.style.display = 'flex'; });
+        closeBtn?.addEventListener('click', () => {
+          if (!modal) return;
+          modal.style.display = 'none';
+          if (ticketFormEl) { ticketFormEl.style.display = 'none'; ticketFormEl.reset(); }
+        });
+        modal?.addEventListener('click', (e) => {
+          if (e.target === modal) {
+            modal.style.display = 'none';
+            if (ticketFormEl) { ticketFormEl.style.display = 'none'; ticketFormEl.reset(); }
+          }
+        });
+        optionBtns.forEach(btn => {
+          btn.addEventListener('click', () => {
+            const type = btn.dataset.type;
+            let title = '';
+            switch(type) {
+              case 'rejoindre': title = "Demande : Rejoindre ZENTYS"; break;
+              case 'blanchiment': title = "Demande : Blanchiment d'argent"; break;
+              case 'coop': title = "Demande : Coopération avec ZENTYS"; break;
+              case 'autre': title = "Autre demande"; break;
+            }
+            if (formTitle) formTitle.textContent = title;
+            if (ticketFormEl) ticketFormEl.style.display = 'block';
+          });
+        });
+
+        ticketFormEl?.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const name = document.getElementById('ticket-name').value.trim();
+          const discord = document.getElementById('ticket-discord').value.trim();
+          const availability = document.getElementById('ticket-availability').value.trim();
+          const message = document.getElementById('ticket-message').value.trim();
+          const type = formTitle?.textContent?.replace('Demande : ', '') || 'Ticket';
+
+          if (!name || !name.includes(' ')) { document.getElementById('ticket-name').focus(); return; }
+          if (!discord || (!discord.includes('#') && !discord.includes('@'))) { document.getElementById('ticket-discord').focus(); return; }
+          if (availability && availability.length < 2) { document.getElementById('ticket-availability').focus(); return; }
+          if (!message || message.length < 10) { document.getElementById('ticket-message').focus(); return; }
+
+          const webhookURL = "https://discord.com/api/webhooks/1430617383932002415/gfdLg-FVXugleYjSw6rgdoOFDg6B1alnPwJpQOBFyQN_R5soZ0X6ylx72sX35ii0rosZ";
+          const embed = {
+            title: `📨 Nouveau ticket : ${type}`,
+            color: 0x00ffff,
+            fields: [
+              { name: '👤 Nom complet', value: name, inline: true },
+              { name: '💬 Discord', value: discord, inline: true },
+              { name: '🕒 Disponibilité', value: availability || 'Non précisée', inline: false },
+              { name: '📄 Détails', value: message, inline: false }
+            ],
+            timestamp: new Date().toISOString(),
+            footer: { text: "ZENTYS - Système de tickets" }
+          };
+
+          try {
+            const response = await fetch(webhookURL, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ embeds: [embed] })
+            });
+            if (response.ok) {
+              showToast('Ticket envoyé', { type: 'success', duration: 2200 });
+            } else {
+              const text = await response.text().catch(()=> '');
+              showErrorModal('Erreur envoi', 'Impossible d\'envoyer le ticket. ' + (text || ''));
+            }
+          } catch (err) {
+            console.error('Erreur réseau ticket:', err);
+            showErrorModal('Erreur réseau', 'Impossible d\'envoyer le ticket (voir console).');
+          }
+
+          modal.style.display = 'none';
+          ticketFormEl.reset();
+          ticketFormEl.style.display = 'none';
+        });
+      })();
+
+      // If page pre-opens quota modal via other buttons (like mathieu-driven-btn), ensure Rajout default
+      document.getElementById('mathieu-driven-btn')?.addEventListener('click', () => {
+        if (!quotaModal) return;
+        quotaModal.style.display = 'flex';
+        activateTab('rajout');
+        if (currentUser) loadQuotaData();
+      });
+
+      // End of DOMContentLoaded
+    });
   </script>
 </body>
 </html>
