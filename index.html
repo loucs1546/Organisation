@@ -93,7 +93,10 @@
       text-shadow: 0 0 20px rgba(255,255,255,0.3);
       animation: pulseGlow 3s infinite alternate;
     }
-    @keyframes pulseGlow { 0%{ text-shadow:0 0 15px rgba(255,255,255,0.3);}100%{ text-shadow:0 0 30px rgba(255,255,255,0.6),0 0 40px rgba(255,255,255,0.4); } }
+    @keyframes pulseGlow { 
+      0%{ text-shadow:0 0 15px rgba(255,255,255,0.3);} 
+      100%{ text-shadow:0 0 30px rgba(255,255,255,0.6),0 0 40px rgba(255,255,255,0.4); } 
+    }
     h2 {
       font-size: 2.4rem;
       margin: 4rem 0 3rem;
@@ -104,7 +107,11 @@
       display: inline-block;
       animation: glitch 3s infinite;
     }
-    @keyframes glitch { 0%{filter:brightness(1)}50%{filter:brightness(1.3) hue-rotate(5deg)}100%{filter:brightness(1)} }
+    @keyframes glitch { 
+      0%{filter:brightness(1)} 
+      50%{filter:brightness(1.3) hue-rotate(5deg)} 
+      100%{filter:brightness(1)} 
+    }
     h2::after {
       content: '';
       position: absolute;
@@ -115,7 +122,6 @@
       height: 3px;
       background: linear-gradient(to right, transparent, #fff, transparent);
     }
-
     /* Hierarchy styles kept as before */
     .hierarchy-container { position: relative; width: 100%; max-width: 800px; margin: 3rem auto; padding: 4rem 0; height: 500px; display:flex; justify-content:center; align-items:center; }
     .hierarchy-svg { position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:1; }
@@ -135,16 +141,43 @@
       backdrop-filter: blur(5px);
       z-index: 2;
     }
-    .hierarchy-node:hover { box-shadow: 0 0 32px var(--electric-blue),0 0 20px #fff5; transform:scale(1.1) rotate(-2deg); background:rgba(0,255,255,0.1); color:var(--electric-blue); border-color:#fff; text-shadow:0 0 10px var(--electric-blue); }
-    .leader{ top:10%; left:25% } .co-leader{ top:10%; right:25% } .frere-darme{ top:39%; left:10% } .braqueur{ top:39%; right:10% } .tueur{ bottom:10%; left:25% } .p-dessai{ bottom:10%; right:25% }
-    .zentys-logo { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); z-index:3; font-family:'Brush Script MT',cursive; font-size:2.5rem; font-weight:600; color:var(--white); text-shadow:0 0 34px var(--electric-blue),0 0 12px #fff; letter-spacing:2px; pointer-events:none; user-select:none; animation:electricPulse 2s infinite alternate; }
-    @keyframes electricPulse { 0%{ text-shadow:0 0 20px var(--electric-blue),0 0 8px #fff } 100%{ text-shadow:0 0 40px var(--electric-blue),0 0 16px #fff } }
-    .electric-line { stroke:var(--electric-blue); stroke-width:3; stroke-dasharray:14,7,3,4; filter:url(#electric-glow); animation:electric 1.65s linear infinite; }
+    .hierarchy-node:hover { 
+      box-shadow: 0 0 32px var(--electric-blue),0 0 20px #fff5; 
+      transform:scale(1.1) rotate(-2deg); 
+      background:rgba(0,255,255,0.1); 
+      color:var(--electric-blue); 
+      border-color:#fff; 
+      text-shadow:0 0 10px var(--electric-blue); 
+    }
+    .leader{ top:10%; left:25% } 
+    .co-leader{ top:10%; right:25% } 
+    .frere-darme{ top:39%; left:10% } 
+    .braqueur{ top:39%; right:10% } 
+    .tueur{ bottom:10%; left:25% } 
+    .p-dessai{ bottom:10%; right:25% }
+    .zentys-logo { 
+      position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); 
+      z-index:3; font-family:'Brush Script MT',cursive; font-size:2.5rem; font-weight:600; 
+      color:var(--white); text-shadow:0 0 34px var(--electric-blue),0 0 12px #fff; 
+      letter-spacing:2px; pointer-events:none; user-select:none; 
+      animation:electricPulse 2s infinite alternate; 
+    }
+    @keyframes electricPulse { 
+      0%{ text-shadow:0 0 20px var(--electric-blue),0 0 8px #fff } 
+      100%{ text-shadow:0 0 40px var(--electric-blue),0 0 16px #fff } 
+    }
+    .electric-line { 
+      stroke:var(--electric-blue); stroke-width:3; 
+      stroke-dasharray:14,7,3,4; filter:url(#electric-glow); 
+      animation:electric 1.65s linear infinite; 
+    }
     @keyframes electric { to{ stroke-dashoffset: -40; } }
     .electric-glow { filter: drop-shadow(0 0 8px var(--electric-blue)) drop-shadow(0 0 4px #fff); }
     .node-glow { animation: nodeGlow 2s infinite alternate; }
-    @keyframes nodeGlow { 0%{ box-shadow:0 0 15px var(--electric-blue); } 100%{ box-shadow:0 0 30px var(--electric-blue),0 0 10px #fff; } }
-
+    @keyframes nodeGlow { 
+      0%{ box-shadow:0 0 15px var(--electric-blue); } 
+      100%{ box-shadow:0 0 30px var(--electric-blue),0 0 10px #fff; } 
+    }
     /* Layout & grids */
     .grades-grid, .role-column, .immat-full-grid, .vehicles-grid, .tenues-container { width:100%; max-width:1200px; }
     .grades-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:1.8rem; margin-top:2.5rem; }
@@ -155,7 +188,6 @@
     .member-item { display:flex; align-items:center; gap:.2rem; font-size:.9rem; color:#aaa; background:rgba(255,255,255,0.1); padding:.2rem .4rem; border-radius:4px; cursor:pointer; }
     .member-item:hover { background:rgba(0,255,255,0.2); color:var(--electric-blue); }
     .immat-badge { display:inline-block; background:var(--white); color:var(--black); font-weight:bold; padding:.1rem .3rem; border-radius:3px; font-size:.8rem; }
-
     /* role / immat / vehicles / tenues (kept) */
     .roles-section { display:flex; flex-direction:column; gap:2rem; margin-top:2.5rem; }
     .role-column { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:1.8rem; }
@@ -163,20 +195,17 @@
     .role-item:hover { transform:translateY(-5px); }
     .role-title { font-size:1.25rem; font-weight:700; color:var(--white); text-transform:uppercase; }
     .role-details { display:flex; flex-wrap:wrap; gap:.3rem; color:#aaa; }
-
     /* vehicles */
     .immat-full-section { display:flex; flex-direction:column; gap:2rem; margin-top:2.5rem; }
     .immat-full-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:1.8rem; }
     .immat-full-item { background:var(--light-gray); border-radius:10px; padding:1rem 1.5rem; box-shadow:0 4px 12px rgba(0,0,0,0.5); transition:transform .3s; }
     .immat-full-item:hover { transform:translateY(-5px); }
     .immat-full-header { font-size:1.1rem; font-weight:700; color:var(--white); }
-
     .vehicles-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:2.2rem; margin-top:2.5rem; }
     .vehicle-card { background:var(--light-gray); border-radius:14px; overflow:hidden; box-shadow:0 8px 20px rgba(0,0,0,0.6); transition:transform .4s; }
     .vehicle-card:hover { transform:translateY(-12px); box-shadow:0 12px 30px rgba(0,0,0,0.8),0 0 20px rgba(255,255,255,0.1); }
     .vehicle-card img { width:100%; height:130px; object-fit:cover; border-bottom:2px solid var(--white); }
     .vehicle-card h4 { padding:.9rem .8rem .5rem; font-size:1.15rem; }
-
     /* tenues */
     .tenues-section { display:flex; flex-direction:column; gap:2rem; margin-top:2.5rem; }
     .tenues-container { display:flex; gap:5rem; width:100%; justify-content:center; }
@@ -190,68 +219,242 @@
     .tenue-label { font-weight:600; min-width:70px; }
     .tenue-value { background:rgba(255,255,255,0.1); color:var(--white); padding:.2rem .5rem; border-radius:4px; font-size:.85rem; min-width:30px; text-align:center; }
     .tenue-note { font-style:italic; font-size:.8rem; color:#888; margin-top:.3rem; text-align:center; }
-
     /* Contact and buttons */
     .contact-section { text-align:center; margin-top:2.5rem; max-width:700px; }
-    .discord-btn { background:#5865F2; color:white; border:none; padding:1rem 2.2rem; border-radius:50px; font-weight:600; font-size:1.25rem; cursor:pointer; display:inline-flex; align-items:center; gap:.8rem; margin:1rem 0; transition:all .3s; }
-    .discord-btn:hover { background:#4752c4; transform:translateY(-3px); box-shadow:0 6px 20px rgba(88,101,242,0.5); }
+    .discord-btn { 
+      background:#5865F2; color:white; border:none; padding:1rem 2.2rem; 
+      border-radius:50px; font-weight:600; font-size:1.25rem; cursor:pointer; 
+      display:inline-flex; align-items:center; gap:.8rem; margin:1rem 0; transition:all .3s; 
+    }
+    .discord-btn:hover { 
+      background:#4752c4; transform:translateY(-3px); 
+      box-shadow:0 6px 20px rgba(88,101,242,0.5); 
+    }
     .discord-btn.secondary { background:#00eaff; color:#000; }
-
     /* footer */
     footer { background: rgba(10,10,10,0.92); text-align:center; padding:2.5rem; margin-top:4rem; border-top:1px solid var(--border); }
-
     /* Modal base */
-    .modal { display:none; position:fixed; z-index:5000; left:0; top:0; width:100%; height:100%; background-color:rgba(0,0,0,0.92); backdrop-filter:blur(8px); justify-content:center; align-items:center; }
-    .modal-content { background:var(--gray); border:2px solid var(--electric-blue); border-radius:16px; padding:2rem; width:90%; max-width:500px; box-shadow:0 0 30px var(--electric-blue); position:relative; animation:modalPop .4s cubic-bezier(.175,.885,.32,1.275); }
-    @keyframes modalPop { 0%{ transform:scale(.8); opacity:0 } 100%{ transform:scale(1); opacity:1 } }
-    .close-btn { position:absolute; top:15px; right:20px; font-size:1.8rem; color:#fff; cursor:pointer; transition: color .3s, transform .2s; }
+    .modal { 
+      display:none; position:fixed; z-index:5000; left:0; top:0; 
+      width:100%; height:100%; background-color:rgba(0,0,0,0.92); 
+      backdrop-filter:blur(8px); justify-content:center; align-items:center; 
+    }
+    .modal-content { 
+      background:var(--gray); border:2px solid var(--electric-blue); 
+      border-radius:16px; padding:2rem; width:90%; max-width:500px; 
+      box-shadow:0 0 30px var(--electric-blue); position:relative; 
+      animation:modalPop .4s cubic-bezier(.175,.885,.32,1.275); 
+    }
+    @keyframes modalPop { 
+      0%{ transform:scale(.8); opacity:0 } 
+      100%{ transform:scale(1); opacity:1 } 
+    }
+    .close-btn { 
+      position:absolute; top:15px; right:20px; font-size:1.8rem; 
+      color:#fff; cursor:pointer; transition: color .3s, transform .2s; 
+    }
     .close-btn:hover { color:var(--electric-blue); transform:rotate(90deg); }
 
-    /* ticket options */
-    .ticket-options { display:flex; flex-direction:column; gap:.9rem; }
-    .ticket-option-btn { background:var(--light-gray); color:white; border:1px solid var(--border); padding:.9rem; border-radius:10px; font-size:1rem; font-weight:600; cursor:pointer; transition:all .3s; text-align:center; position:relative; overflow:hidden; }
-    .ticket-option-btn::before { content:''; position:absolute; top:0; left:-100%; width:100%; height:100%; background:linear-gradient(90deg, transparent, rgba(0,255,255,0.2), transparent); transition:left .6s; }
-    .ticket-option-btn:hover::before { left:100%; }
-    .ticket-option-btn:hover { background:rgba(0,255,255,0.1); border-color:var(--electric-blue); box-shadow:0 0 15px rgba(0,255,255,0.4); transform:translateY(-2px); }
-    #ticket-form input, #ticket-form textarea { outline:none; }
-    #ticket-form input:focus, #ticket-form textarea:focus { border-color:var(--electric-blue); box-shadow:0 0 8px rgba(0,255,255,0.4); }
-    .scan-line {
+    /* ===== QUOTA MODAL — BASE ===== */
+    .quota-modal { 
+      display:none; position:fixed; top:0; left:0; width:100%; height:100%; 
+      background:rgba(0,0,0,0.9); backdrop-filter:blur(8px); z-index:9999; 
+      justify-content:center; align-items:center; 
+    }
+    .quota-modal-content {
+      background: var(--gray);
+      border: 2px solid var(--electric-blue);
+      border-radius: 16px;
+      width: 90%;
+      max-width: 700px;
+      padding: 2rem;
+      box-shadow: 0 0 30px var(--electric-blue);
+      position: relative;
+      /* ✅ ANIMATION FLUIDE AVEC max-height */
+      transition: max-height 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  border-color 0.4s ease,
+                  box-shadow 0.4s ease;
+      overflow: hidden;
+      /* Hauteur initiale suffisante pour "Rajout" (plus grand) */
+      max-height: 600px; /* valeur suffisante pour Rajout */
+      min-height: 600px;
+    }
+
+    /* ===== Thèmes dynamiques ===== */
+    .quota-modal-content.rajout-theme {
+      max-height: 600px;
+      border-color: #ff3333;
+      box-shadow: 0 0 30px rgba(255, 51, 51, 0.7);
+    }
+    .quota-modal-content.rajout-theme h3 {
+      color: #ff3333 !important;
+    }
+
+    .quota-modal-content.dossier-theme {
+      max-height: 420px;
+      min-height: 420px;
+      border-color: #9933ff;
+      box-shadow: 0 0 30px rgba(153, 51, 255, 0.7);
+    }
+    .quota-modal-content.dossier-theme h3 {
+      color: #b366ff !important;
+    }
+
+    /* ===== Onglets — Design unifié noir + néon ===== */
+    .quota-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .quota-tab-btn {
+      padding: 0.6rem 1.2rem;
+      background: #000;
+      color: white;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    /* Rajout = tout en rouge */
+    .quota-modal-content.rajout-theme .quota-tab-btn {
+      border: 2px solid #ff3333;
+      box-shadow: 0 0 8px rgba(255, 51, 51, 0.4);
+    }
+    .quota-modal-content.rajout-theme .quota-tab-btn:hover {
+      box-shadow: 0 0 16px rgba(255, 51, 51, 0.7);
+      transform: translateY(-2px);
+    }
+    .quota-modal-content.rajout-theme .quota-tab-btn.active {
+      background: #111;
+      border-color: #ff0000;
+      box-shadow: 0 0 12px rgba(255, 0, 0, 0.6);
+    }
+
+    /* Dossier = tout en violet */
+    .quota-modal-content.dossier-theme .quota-tab-btn {
+      border: 2px solid #9933ff;
+      box-shadow: 0 0 8px rgba(153, 51, 255, 0.4);
+    }
+    .quota-modal-content.dossier-theme .quota-tab-btn:hover {
+      box-shadow: 0 0 16px rgba(153, 51, 255, 0.7);
+      transform: translateY(-2px);
+    }
+    .quota-modal-content.dossier-theme .quota-tab-btn.active {
+      background: #111;
+      border-color: #8000ff;
+      box-shadow: 0 0 12px rgba(128, 0, 255, 0.6);
+    }
+
+    .quota-tab-content { display: none; }
+    .quota-tab-content.active { display: block; }
+
+    /* ===== Formulaire & Boutons universels ===== */
+    .quota-form label {
       display: block;
+      margin: 0.8rem 0 0.4rem;
+      font-weight: 600;
+      color: #cfeff0;
+    }
+    .quota-form input,
+    .quota-form select,
+    .quota-form textarea {
+      width: 100%;
+      padding: 0.7rem;
+      background: var(--light-gray);
+      border: 1px solid var(--border);
+      color: white;
+      border-radius: 8px;
+    }
+
+    /* ✅ Bouton "Envoyer le quota" dynamique */
+    .quota-modal-content.rajout-theme .quota-form button[type="submit"] {
+      background: #000;
+      color: white;
+      border: 2px solid #ff3333;
+      box-shadow: 0 0 8px rgba(255, 51, 51, 0.4);
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .quota-modal-content.rajout-theme .quota-form button[type="submit"]:hover {
+      box-shadow: 0 0 16px rgba(255, 51, 51, 0.7);
+      transform: translateY(-2px);
+    }
+
+    .quota-modal-content.dossier-theme .quota-form button[type="submit"] {
+      background: #000;
+      color: white;
+      border: 2px solid #9933ff;
+      box-shadow: 0 0 8px rgba(153, 51, 255, 0.4);
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .quota-modal-content.dossier-theme .quota-form button[type="submit"]:hover {
+      box-shadow: 0 0 16px rgba(153, 51, 255, 0.7);
+      transform: translateY(-2px);
+    }
+
+    /* Catégories (Drogue, Go-Fast...) */
+    .quota-cat-btn {
+      background: #000;
+      color: white;
+      border: 2px solid var(--electric-blue);
+      border-radius: 8px;
+      padding: 10px 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+
+    /* Catégorie sélectionnée — Rajout */
+    .quota-modal-content.rajout-theme .quota-cat-btn.active {
+      background: #111;
+      color: white;
+      border-color: #ff0000;
+      box-shadow: 0 0 12px rgba(255, 0, 0, 0.6);
+    }
+
+    /* Catégorie sélectionnée — Dossier */
+    .quota-modal-content.dossier-theme .quota-cat-btn.active {
+      background: #111;
+      color: white;
+      border-color: #8000ff;
+      box-shadow: 0 0 12px rgba(128, 0, 255, 0.6);
+    }
+
+    /* Hover des catégories */
+    .quota-modal-content.rajout-theme .quota-cat-btn:hover:not(.active) {
+      box-shadow: 0 0 8px rgba(255, 51, 51, 0.4);
+    }
+    .quota-modal-content.dossier-theme .quota-cat-btn:hover:not(.active) {
+      box-shadow: 0 0 8px rgba(153, 51, 255, 0.4);
+    }
+
+    .quota-modal h3 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: var(--electric-blue);
+      font-size: 1.8rem;
+    }
+    .close-quota {
       position: absolute;
-      bottom: -6px;
-      left: 32%;           /* start 32% from the left of the header */
-      width: 33%;          /* shorter line so it doesn't cross the whole viewport */
-      height: 2px;
-      background: var(--electric-blue);
-      border-radius: 2px;
-      box-shadow: 0 0 10px rgba(0, 234, 255, 0.9);
-      animation: scanLine 2.4s linear infinite;
-      opacity: 0.95;
-      pointer-events: none;
+      top: 1rem;
+      right: 1.2rem;
+      font-size: 1.8rem;
+      color: #fff;
+      cursor: pointer;
     }
 
-    /* Move from just outside the left edge of the line to just outside its right edge */
-    @keyframes scanLine {
-      0%   { transform: translateX(-110%); opacity: 0; }
-      10%  { opacity: 1; }
-      90%  { opacity: 1; }
-      100% { transform: translateX(110%); opacity: 0; }
-    }
-    /* Quota modal */
-    .quota-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); backdrop-filter:blur(8px); z-index:9999; justify-content:center; align-items:center; }
-    .quota-modal-content { background:var(--gray); border:2px solid var(--electric-blue); border-radius:16px; width:90%; max-width:700px; padding:2rem; box-shadow:0 0 30px var(--electric-blue); position:relative; }
-    .quota-modal h3 { text-align:center; margin-bottom:1.5rem; color:var(--electric-blue); font-size:1.8rem; }
-    .close-quota { position:absolute; top:1rem; right:1.2rem; font-size:1.8rem; color:#fff; cursor:pointer; }
-    .quota-tabs { display:flex; justify-content:center; gap:1rem; margin-bottom:1.5rem; }
-    .quota-tab-btn { padding:.6rem 1.2rem; background:rgba(255,255,255,0.1); border:1px solid var(--electric-blue); color:#fff; font-weight:600; border-radius:8px; cursor:pointer; transition:all .3s; }
-    .quota-tab-btn.active { background:var(--electric-blue); color:#000; }
-    .quota-tab-content { display:none; }
-    .quota-tab-content.active { display:block; }
-    .quota-form label { display:block; margin:.8rem 0 .4rem; font-weight:600; }
-    .quota-form input, .quota-form select, .quota-form textarea { width:100%; padding:.7rem; background:var(--light-gray); border:1px solid var(--border); color:white; border-radius:8px; }
-    .quota-form button { margin-top:1.2rem; width:100%; padding:.8rem; background:var(--electric-blue); color:#000; font-weight:bold; border:none; border-radius:8px; cursor:pointer; }
-
-    /* ===== Dossier inline login: reduced & centered inputs ===== */
+    /* ===== Dossier inline login ===== */
     .dossier-login {
       display: flex;
       justify-content: center;
@@ -267,13 +470,11 @@
       box-shadow: 0 8px 40px rgba(0,170,200,0.04);
       display: block;
     }
-
-    /* Each field stacks label above a centered, reduced input */
     .dossier-login .field {
       margin-bottom: 10px;
       display: flex;
       flex-direction: column;
-      align-items: center; /* center input horizontally */
+      align-items: center;
     }
     .dossier-login .field label {
       display: block;
@@ -281,12 +482,11 @@
       color: #cfeff0;
       margin-bottom: 6px;
       font-size: 0.95rem;
-      text-align: center; /* label centered to match inputs */
+      text-align: center;
     }
-    /* Reduced centered input */
     .dossier-login .field input {
-      width: 68%;              /* reduced width */
-      max-width: 420px;       /* cap width */
+      width: 68%;
+      max-width: 420px;
       padding: 10px 12px;
       border-radius: 8px;
       border: 1px solid rgba(255,255,255,0.06);
@@ -295,14 +495,12 @@
       outline: none;
       transition: box-shadow 160ms ease, border-color 160ms ease;
       display: block;
-      margin: 0 auto;         /* center */
+      margin: 0 auto;
     }
     .dossier-login .field input:focus {
       border-color: #00eaff;
       box-shadow: 0 6px 18px rgba(0,234,255,0.06);
     }
-
-    /* Buttons row (right aligned inside grid but overall centered block) */
     .login-row, .login-actions {
       display: flex;
       justify-content: flex-end;
@@ -327,7 +525,6 @@
       color: #fff;
       border: 1px solid rgba(255,255,255,0.06);
     }
-    /* inline error */
     .dossier-login-error {
       margin-top: 8px;
       color: #ff9999;
@@ -336,23 +533,30 @@
       min-height: 1.2em;
     }
 
-    /* QUOTA list restored appearance */
-    .quota-list { max-height: 360px; overflow: auto; padding: 8px; display: flex; flex-direction: column; gap: 10px; }
-    .quota-entry { padding: 12px; background: rgba(255,255,255,0.03); border-left: 3px solid var(--electric-blue); border-radius: 8px; color: #e9eef0; }
-    .quota-entry small { color: #bfc7c7; display: block; margin-top: 8px; }
+    /* ===== Liste des quotas ===== */
+    .quota-list { 
+      max-height: 360px; overflow: auto; padding: 8px; 
+      display: flex; flex-direction: column; gap: 10px; 
+    }
+    .quota-entry { 
+      padding: 12px; background: rgba(255,255,255,0.03); 
+      border-left: 3px solid var(--electric-blue); border-radius: 8px; 
+      color: #e9eef0; 
+    }
+    .quota-entry small { 
+      color: #bfc7c7; display: block; margin-top: 8px; 
+    }
     .quota-list::-webkit-scrollbar { width: 12px; }
     .quota-list::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); border-radius: 8px; }
     .quota-list::-webkit-scrollbar-thumb { background: rgba(0,255,255,0.12); border-radius: 8px; }
     .quota-entry strong { color: var(--electric-blue); }
 
-    /* RESPONSIVE tweak: make dossier inputs larger on small screens for usability */
+    /* ===== Responsive ===== */
     @media (max-width: 600px) {
       .dossier-login .field input { width: 90%; max-width: none; }
       .dossier-login .field label { text-align: left; width: 90%; }
       .dossier-login-grid { padding: 12px; }
     }
-
-    /* MEDIA QUERIES */
     @media (max-width: 768px) {
       h1 { font-size: 2.8rem !important; padding: 0 1rem; }
       h2 { font-size: 1.8rem !important; }
@@ -378,8 +582,6 @@
       nav { display: flex; flex-wrap: wrap; justify-content: center; }
       nav a { margin: 0.3rem 0.6rem; }
     }
-
-    /* accessibility: hide pointer events when aria-hidden */
     [aria-hidden="true"] { pointer-events: none; }
   </style>
 </head>
@@ -1016,7 +1218,7 @@
                 style="width: 100%; padding: 0.8rem; border-radius: 8px; background: var(--gray); color: white; border: 1px solid var(--border); resize: vertical;"></textarea>
             </div>
             <div style="text-align: center;">
-              <button type="submit" class="discord-btn" style="padding: 0.7rem 1.8rem; font-size: 1rem; background: #5865F2; color: white;">
+              <button type="submit" class="quota-submit-btn">
                 <i class="fas fa-paper-plane"></i> Envoyer le ticket
               </button>
             </div>
@@ -1034,38 +1236,48 @@
             <button class="quota-tab-btn" data-tab="dossier" id="tab-btn-dossier">Dossier</button>
           </div>
 
-          <div id="tab-rajout" class="quota-tab-content">
-            <form id="quota-form" style="max-width:520px; margin:0 auto;">
-              <label for="quota-categorie">Catégorie</label>
-              <select id="quota-categorie" required style="width:100%; padding:8px; margin-top:6px; background:var(--light-gray); color:#fff; border:1px solid var(--border); border-radius:8px;">
-                <option value="">-- Sélectionner --</option>
-                <option value="Drogue">Drogue</option>
-                <option value="Go-Fast">Go-Fast</option>
-                <option value="Donneur">Donneur</option>
-              </select>
-              <label for="quota-nom" style="display:block; margin-top:10px;">Nom</label>
-              <input type="text" id="quota-nom" placeholder="Ex: Jean Dupont" required style="width:100%; padding:8px; margin-top:6px; background:var(--light-gray); color:#fff; border:1px solid var(--border); border-radius:8px;">
-              <label for="quota-valeur" style="display:block; margin-top:10px;">Quota</label>
-              <input type="number" id="quota-valeur" placeholder="Ex: 500000" min="0" required style="width:100%; padding:8px; margin-top:6px; background:var(--light-gray); color:#fff; border:1px solid var(--border); border-radius:8px;">
-              <button type="submit" style="margin-top:12px; width:100%; padding:10px; background:var(--electric-blue); color:#000; font-weight:bold; border:none; border-radius:8px; cursor:pointer;">Envoyer le quota</button>
+         <div id="tab-rajout" class="quota-tab-content">
+            <form id="quota-form" style="max-width:480px; margin:0 auto; padding:0 12px;">
+              <label for="quota-categorie" style="display:block; margin-bottom:6px; font-weight:600; color:#cfeff0;">Catégorie</label>
+              <div class="quota-category-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px;">
+                <button type="button" class="quota-cat-btn" data-value="Drogue">Drogue</button>
+                <button type="button" class="quota-cat-btn" data-value="Go-Fast">Go-Fast</button>
+                <button type="button" class="quota-cat-btn" data-value="Donneur">Donneur</button>
+                <button type="button" class="quota-cat-btn" data-value="Autre">Autre</button>
+              </div>
+              <input type="hidden" id="quota-categorie" required>
+        
+              <label for="quota-nom" style="display:block; margin:12px 0 6px; font-weight:600; color:#cfeff0;">Nom</label>
+              <input type="text" id="quota-nom" placeholder="Ex: Jean Dupont" required
+              style="width:100%; padding:9px 12px; background:var(--light-gray); color:#fff; border:1px solid var(--border); border-radius:8px; font-size:0.95rem;">
+        
+              <label for="quota-valeur" style="display:block; margin:12px 0 6px; font-weight:600; color:#cfeff0;">Quota (en €)</label>
+              <input type="number" id="quota-valeur" placeholder="Ex: 500000" min="0" required
+              style="width:100%; padding:9px 12px; background:var(--light-gray); color:#fff; border:1px solid var(--border); border-radius:8px; font-size:0.95rem;">
+        
+              <button type="submit" style="margin-top:16px; width:100%; padding:10px; background:var(--electric-blue); color:#000; font-weight:bold; border:none; border-radius:8px; cursor:pointer; font-size:1rem;">
+                Envoyer le quota
+              </button>
             </form>
           </div>
 
           <div id="tab-dossier" class="quota-tab-content">
             <!-- Login inline (amélioré) -->
-            <div id="dossier-login" class="dossier-login" style="display:block;">
+            <div id="dossier-login" class="dossier-login" style="display:block; padding:0 12px;">
               <div class="dossier-login-grid">
-                <div class="field">
-                  <label for="dossier-login-user">Utilisateur</label>
-                  <input id="dossier-login-user" type="text" placeholder="Pseudo" autocomplete="username" />
+                <div class="field" style="align-items: flex-start; text-align: left;">
+                  <label for="dossier-login-user" style="display:block; margin-bottom:6px; font-weight:600; color:#cfeff0; text-align:left;">Utilisateur</label>
+                  <input id="dossier-login-user" type="text" placeholder="Votre pseudo" autocomplete="username"
+                    style="width:100%; max-width:320px; padding:9px 12px; background:var(--light-gray); color:#fff; border:1px solid var(--border); border-radius:8px; font-size:0.95rem;" />
                 </div>
-                <div class="field">
-                  <label for="dossier-login-pass">Mot de passe</label>
-                  <input id="dossier-login-pass" type="password" placeholder="Mot de passe" autocomplete="current-password" />
+                <div class="field" style="align-items: flex-start; text-align: left;">
+                  <label for="dossier-login-pass" style="display:block; margin-bottom:6px; font-weight:600; color:#cfeff0; text-align:left;">Mot de passe</label>
+                  <input id="dossier-login-pass" type="password" placeholder="Mot de passe" autocomplete="current-password"
+                    style="width:100%; max-width:320px; padding:9px 12px; background:var(--light-gray); color:#fff; border:1px solid var(--border); border-radius:8px; font-size:0.95rem;" />
                 </div>
-                <div class="login-row">
-                  <button id="dossier-login-cancel" class="cancel-btn">Annuler</button>
-                  <button id="dossier-login-submit" class="login-btn">Se connecter</button>
+                <div class="login-row" style="justify-content: flex-start; gap:10px; margin-top:8px;">
+                  <button id="dossier-login-submit" class="login-btn" style="padding:8px 16px;">Se connecter</button>
+                  <button id="dossier-login-cancel" class="cancel-btn" style="padding:8px 16px;">Annuler</button>
                 </div>
                 <div id="dossier-login-error" class="dossier-login-error" aria-live="polite"></div>
               </div>
@@ -1292,6 +1504,18 @@
         document.getElementById('tab-dossier')?.classList.add('active');
         await loadQuotaData();
       }
+      // Gestion des boutons de catégorie
+      document.querySelectorAll('.quota-cat-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          // Désactiver tous
+          document.querySelectorAll('.quota-cat-btn').forEach(b => b.classList.remove('active'));
+          // Activer celui cliqué
+          btn.classList.add('active');
+          // Mettre à jour le champ caché
+          const hiddenInput = document.getElementById('quota-categorie');
+          if (hiddenInput) hiddenInput.value = btn.dataset.value;
+        });
+      });
 
       // === INLINE AUTH (if dossier-login exists inside modal) ===
       async function authenticateInline(username, password) {
@@ -1350,39 +1574,49 @@
 
       // === TAB HANDLING ===
       const tabButtons = document.querySelectorAll('.quota-tab-btn');
+    
       function activateTab(name) {
+        // Mettre à jour les boutons actifs
         tabButtons.forEach(b => b.classList.toggle('active', b.dataset.tab === name));
+        // Mettre à jour les contenus
         document.querySelectorAll('.quota-tab-content').forEach(c => {
           c.classList.toggle('active', c.id === 'tab-' + name);
         });
-      }
 
-      // attach tab listeners (if present)
+        // Appliquer le thème global
+        const modalContent = document.querySelector('.quota-modal-content');
+        if (modalContent) {
+          modalContent.classList.remove('rajout-theme', 'dossier-theme');
+          if (name === 'rajout') {
+            modalContent.classList.add('rajout-theme');
+          } else if (name === 'dossier') {
+            modalContent.classList.add('dossier-theme');
+          }
+        }
+      }
+    
+      // Écouteurs sur les onglets
       tabButtons.forEach(btn => {
-        btn.addEventListener('click', async () => {
+        btn.addEventListener('click', () => {
           const tab = btn.dataset.tab;
           activateTab(tab);
+    
           if (tab === 'dossier') {
-            // prefer inline login if present
             if (dossierLogin) {
-              // if not authenticated, show inline login; else show list
               if (!currentUser) {
                 dossierLogin.style.display = 'block';
                 if (dossierListWrapper) dossierListWrapper.style.display = 'none';
                 if (dossierLoginError) dossierLoginError.style.display = 'none';
                 dossierLoginUser?.focus();
               } else {
-                if (dossierLogin) dossierLogin.style.display = 'none';
+                dossierLogin.style.display = 'none';
                 if (dossierListWrapper) dossierListWrapper.style.display = 'block';
-                await loadQuotaData();
+                loadQuotaData();
               }
             } else {
-              // fallback to global modal login
-              injectGlobalLoginIfNeeded();
               showGlobalLoginModal();
             }
           } else {
-            // Rajout -> focus first field
             setTimeout(() => document.getElementById('quota-nom')?.focus(), 60);
           }
         });
@@ -1405,8 +1639,13 @@
         if (!quotaModal) return;
         quotaModal.style.display = 'flex';
         quotaModal.setAttribute('aria-hidden', 'false');
-        activateTab('rajout'); // show Rajout by default
-        // hide inline login/list initially
+        
+        // Réinitialiser la hauteur pour permettre l'animation
+        const modalContent = document.querySelector('.quota-modal-content');
+        if (modalContent) modalContent.style.height = 'auto';
+
+        activateTab('rajout'); // déclenche l’animation vers Rajout
+
         if (dossierLogin) dossierLogin.style.display = 'none';
         if (dossierListWrapper) dossierListWrapper.style.display = 'none';
       });
@@ -1524,6 +1763,30 @@
             }
             if (formTitle) formTitle.textContent = title;
             if (ticketFormEl) ticketFormEl.style.display = 'block';
+          });
+        });
+        quotaTabBtns.forEach(btn => {
+          btn.addEventListener('click', () => {
+            // Mettre à jour les classes actives
+            quotaTabBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            const tab = btn.dataset.tab;
+            document.querySelectorAll('.quota-tab-content').forEach(c => c.classList.remove('active'));
+            document.getElementById(`tab-${tab}`)?.classList.add('active');
+        
+            // Changer le thème de la modale entière
+            const modalContent = document.querySelector('.quota-modal-content');
+            if (modalContent) {
+              // Retirer les thèmes précédents
+              modalContent.classList.remove('rajout-theme', 'dossier-theme');
+              // Ajouter le bon thème
+              if (tab === 'rajout') {
+                modalContent.classList.add('rajout-theme');
+              } else if (tab === 'dossier') {
+                modalContent.classList.add('dossier-theme');
+              }
+            }
           });
         });
 
