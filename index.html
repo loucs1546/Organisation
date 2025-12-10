@@ -1168,9 +1168,7 @@
       <!-- MODAL QUOTA -->
       <!-- MODAL QUOTA (VERSION SIMPLIFIÉE : RAJOUT SEULEMENT + IMAGE + WEBHOOK) -->
       <div id="quota-modal" class="quota-modal" aria-hidden="true">
-        <div class="quota-modal-content rajout-theme" role="dialog" aria-modal="true">
-          <span class="close-quota">&times;</span>
-          <h3 style="text-align:center; color:#ff3333; margin-bottom:10px;">Envoyer un Rajout</h3>
+        <div id="tab-rajout" class="quota-tab-content">
           <form id="quota-form" style="max-width:480px; margin:0 auto; padding:0 12px;">
             <label for="quota-categorie" style="display:block; margin-bottom:6px; font-weight:600; color:#cfeff0;">Catégorie</label>
             <div class="quota-category-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px;">
@@ -1189,11 +1187,16 @@
             <input type="number" id="quota-valeur" placeholder="Ex: 500000" min="0" required
               style="width:100%; padding:9px 12px; background:var(--light-gray); color:#fff; border:1px solid var(--border); border-radius:8px; font-size:0.95rem;">
 
-            <label for="quota-image" style="display:block; margin:12px 0 6px; font-weight:600; color:#cfeff0;">URL de l'image (optionnel)</label>
-            <input type="url" id="quota-image" placeholder="https://exemple.com/image.jpg"
-              style="width:100%; padding:9px 12px; background:var(--light-gray); color:#fff; border:1px solid var(--border); border-radius:8px; font-size:0.95rem;">
+            <!-- ✅ CHAMP UPLOAD D'IMAGE -->
+            <label for="quota-image-upload" style="display:block; margin:18px 0 8px; font-weight:600; color:#cfeff0;">Preuve (screenshot)</label>
+            <input type="file" id="quota-image-upload" accept="image/png, image/jpeg, image/webp"
+              style="width:100%; padding:6px; background:var(--light-gray); color:#fff; border:1px solid var(--border); border-radius:8px;">
 
-            <button type="submit" style="margin-top:16px; width:100%; padding:10px; background:#000; color:white; font-weight:bold; border:2px solid #ff3333; border-radius:8px; cursor:pointer; font-size:1rem; box-shadow: 0 0 8px rgba(255,51,51,0.4);">
+            <div id="image-preview" style="display:none; margin-top:10px; text-align:center;">
+              <img id="preview-img" src="" alt="Aperçu" style="max-width:100%; max-height:200px; border-radius:8px; border:1px solid var(--border);">
+            </div>
+
+            <button type="submit" style="margin-top:20px; width:100%; padding:10px; background:#000; color:white; font-weight:bold; border:2px solid #ff3333; border-radius:8px; cursor:pointer; font-size:1rem; box-shadow: 0 0 8px rgba(255,51,51,0.4);">
               Envoyer le rajout
             </button>
           </form>
@@ -1571,35 +1574,87 @@
         }
       });
 
-      // === QUOTA FORM SUBMIT (Rajout) ===
-      // === QUOTA FORM SUBMIT (RAJOUT + WEBHOOK DISCORD) ===
+      // === GESTION DU FICHIER + PREVIEW ===
+      const imageUpload = document.getElementById('quota-image-upload');
+      const preview = document.getElementById('image-preview');
+      const previewImg = document.getElementById('preview-img');
+
+      if (imageUpload) {
+        imageUpload.addEventListener('change', (e) => {
+          const file = e.target.files[0];
+          if (file && file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+              previewImg.src = ev.target.result;
+              preview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+          } else {
+            preview.style.display = 'none';
+          }
+        });
+      }
+
+      // === ENVOI DU RAJOUT AVEC IMAGE VIA IMGBB + WEBHOOK ===
       quotaForm?.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        const nom = document.getElementById('quota-nom')?.value.trim() || '';
-        const categorie = document.getElementById('quota-categorie')?.value || '';
-        const quotaRaw = (document.getElementById('quota-valeur')?.value || '').toString().trim();
-        const imageUrl = document.getElementById('quota-image')?.value.trim() || '';
+        const nom = document.getElementById('quota-nom')?.value.trim();
+        const categorie = document.getElementById('quota-categorie')?.value;
+        const quotaRaw = document.getElementById('quota-valeur')?.value?.trim();
+        const fileInput = document.getElementById('quota-image-upload');
+        const file = fileInput?.files[0];
 
         if (!nom || !categorie || !quotaRaw) {
           showToast('Veuillez remplir tous les champs obligatoires.', { type: 'info', duration: 2500 });
           return;
         }
 
-        const normalized = quotaRaw.replace(/\s/g, '').replace(',', '.');
-        const parsed = Number(normalized);
-        if (isNaN(parsed)) {
-          showToast('Valeur du quota invalide.', { type: 'info', duration: 2500 });
+        const quotaNum = Number(quotaRaw.replace(/\s/g, '').replace(',', '.'));
+        if (isNaN(quotaNum)) {
+          showToast('Quota invalide.', { type: 'info', duration: 2500 });
           return;
         }
-        const quotaFormatted = `${Math.round(parsed).toLocaleString('fr-FR')} €`;
+        const quotaFormatted = `${Math.round(quotaNum).toLocaleString('fr-FR')} €`;
 
         // Générer timestamp FR
         const now = new Date();
         const options = { hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit', year: 'numeric' };
         const timestamp = now.toLocaleString('fr-FR', options).replace(/\sà\s/, ' à ');
 
-        // Préparer l'embed Discord
+        let imageUrl = '';
+
+        // ✅ UPLOAD DE L'IMAGE SUR IMGBB (si fournie)
+        if (file) {
+          const maxSize = 8 * 1024 * 1024; // 8 Mo max
+          if (file.size > maxSize) {
+            showToast('⚠️ Image trop lourde (max 8 Mo).', { type: 'info', duration: 2500 });
+            return;
+          }
+
+          const formData = new FormData();
+          formData.append('image', file);
+
+          try {
+            showToast('📤 Upload de la preuve...', { type: 'info', duration: 1500 });
+            const imgbbRes = await fetch('https://api.imgbb.com/1/upload?key=7b7b6e5d7d3e3f2c3c4d5e6f7g8h9i0j', {
+              method: 'POST',
+              body: formData
+            });
+
+            const imgbbJson = await imgbbRes.json();
+            if (!imgbbJson.success) {
+              throw new Error(imgbbJson.error?.message || 'Échec upload ImgBB');
+            }
+            imageUrl = imgbbJson.data.url;
+          } catch (err) {
+            console.error('Erreur upload ImgBB:', err);
+            showToast('❌ Échec upload image. Rajout annulé.', { type: 'info', duration: 3000 });
+            return;
+          }
+        }
+
+        // ✅ PRÉPARER L'EMBED DISCORD
         const embed = {
           title: `🆕 Nouveau rajout — ${categorie}`,
           color: 0xff3333,
@@ -1613,13 +1668,7 @@
         };
 
         if (imageUrl) {
-          // Valider rapidement l’URL (optionnel mais utile)
-          try {
-            new URL(imageUrl);
-            embed.image = { url: imageUrl };
-          } catch (err) {
-            showToast('URL image invalide. Rajout envoyé sans image.', { type: 'info', duration: 2500 });
-          }
+          embed.image = { url: imageUrl };
         }
 
         const webhookUrl = 'https://discord.com/api/webhooks/1448356158313336973/88xTqKQZgOEamR-xYAHVVLRzmbLiqGlellVZaosWtu1ZlDFC1kDVe6_J8UyFUZO99yQ2';
@@ -1634,19 +1683,20 @@
           if (response.ok) {
             showToast('✅ Rajout envoyé sur Discord !', { type: 'success', duration: 2500 });
             quotaForm.reset();
+            preview.style.display = 'none';
             document.querySelectorAll('.quota-cat-btn').forEach(b => b.classList.remove('active'));
             document.getElementById('quota-categorie').value = '';
           } else {
-            const errorText = await response.text();
-            console.error('Erreur Discord Webhook:', errorText);
-            showToast('❌ Échec de l’envoi (voir console)', { type: 'info', duration: 3000 });
+            const errText = await response.text();
+            console.error('Erreur webhook:', errText);
+            showToast('❌ Échec envoi Discord.', { type: 'info', duration: 3000 });
           }
         } catch (err) {
           console.error('Erreur réseau webhook:', err);
-          showToast('Erreur réseau – impossible d’envoyer sur Discord.', { type: 'info', duration: 3000 });
+          showToast('Erreur réseau – impossible d’envoyer.', { type: 'info', duration: 3000 });
         }
       });
-
+      
       // === LOAD QUOTA DATA (fills quota-list-container) ===
       async function loadQuotaData() {
         if (!supabase) { showErrorModal('Erreur', 'Supabase indisponible.'); if (quotaListContainer) quotaListContainer.innerHTML = '<p style="text-align:center;color:#f66;">Erreur</p>'; return; }
