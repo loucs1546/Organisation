@@ -201,7 +201,13 @@
     .immat-full-item { background:var(--light-gray); border-radius:10px; padding:1rem 1.5rem; box-shadow:0 4px 12px rgba(0,0,0,0.5); transition:transform .3s; }
     .immat-full-item:hover { transform:translateY(-5px); }
     .immat-full-header { font-size:1.1rem; font-weight:700; color:var(--white); }
-    .vehicles-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:2.2rem; margin-top:2.5rem; }
+    .vehicles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2.2rem;
+      margin-top: 2.5rem;
+      justify-content: center;
+    }
     .vehicle-card { background:var(--light-gray); border-radius:14px; overflow:hidden; box-shadow:0 8px 20px rgba(0,0,0,0.6); transition:transform .4s; }
     .vehicle-card:hover { transform:translateY(-12px); box-shadow:0 12px 30px rgba(0,0,0,0.8),0 0 20px rgba(255,255,255,0.1); }
     .vehicle-card img { width:100%; height:130px; object-fit:cover; border-bottom:2px solid var(--white); }
