@@ -15,7 +15,7 @@
       --gray: #121212;
       --light-gray: #1e1e1e;
       --border: rgba(255,255,255,0.15);
-      --electric-blue: #00ffff;
+      --electric-red: #00ffff;
       --electric-glow: #00eaff;
     }
     * {
@@ -128,26 +128,26 @@
     .hierarchy-node {
       position: absolute;
       background: rgba(20,20,20,0.8);
-      border: 2px solid var(--electric-blue);
+      border: 2px solid var(--electric-red);
       border-radius: 12px;
       padding: 0.95rem 2.2rem;
       font-size: 1.35rem;
       font-weight: 600;
       color: var(--white);
-      box-shadow: 0 0 18px var(--electric-blue), 0 0 8px #fff2;
+      box-shadow: 0 0 18px var(--electric-red), 0 0 8px #fff2;
       transition: all 0.3s ease;
-      text-shadow: 0 2px 6px var(--electric-blue);
+      text-shadow: 0 2px 6px var(--electric-red);
       cursor: pointer;
       backdrop-filter: blur(5px);
       z-index: 2;
     }
     .hierarchy-node:hover { 
-      box-shadow: 0 0 32px var(--electric-blue),0 0 20px #fff5; 
+      box-shadow: 0 0 32px var(--electric-red),0 0 20px #fff5; 
       transform:scale(1.1) rotate(-2deg); 
       background:rgba(0,255,255,0.1); 
-      color:var(--electric-blue); 
+      color:var(--electric-red); 
       border-color:#fff; 
-      text-shadow:0 0 10px var(--electric-blue); 
+      text-shadow:0 0 10px var(--electric-red); 
     }
     .leader{ top:10%; left:25% } 
     .co-leader{ top:10%; right:25% } 
@@ -158,25 +158,25 @@
     .zentys-logo { 
       position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); 
       z-index:3; font-family:'Brush Script MT',cursive; font-size:2.5rem; font-weight:600; 
-      color:var(--white); text-shadow:0 0 34px var(--electric-blue),0 0 12px #fff; 
+      color:var(--white); text-shadow:0 0 34px var(--electric-red),0 0 12px #fff; 
       letter-spacing:2px; pointer-events:none; user-select:none; 
       animation:electricPulse 2s infinite alternate; 
     }
     @keyframes electricPulse { 
-      0%{ text-shadow:0 0 20px var(--electric-blue),0 0 8px #fff } 
-      100%{ text-shadow:0 0 40px var(--electric-blue),0 0 16px #fff } 
+      0%{ text-shadow:0 0 20px var(--electric-red),0 0 8px #fff } 
+      100%{ text-shadow:0 0 40px var(--electric-red),0 0 16px #fff } 
     }
     .electric-line { 
-      stroke:var(--electric-blue); stroke-width:3; 
+      stroke:var(--electric-red); stroke-width:3; 
       stroke-dasharray:14,7,3,4; filter:url(#electric-glow); 
       animation:electric 1.65s linear infinite; 
     }
     @keyframes electric { to{ stroke-dashoffset: -40; } }
-    .electric-glow { filter: drop-shadow(0 0 8px var(--electric-blue)) drop-shadow(0 0 4px #fff); }
+    .electric-glow { filter: drop-shadow(0 0 8px var(--electric-red)) drop-shadow(0 0 4px #fff); }
     .node-glow { animation: nodeGlow 2s infinite alternate; }
     @keyframes nodeGlow { 
-      0%{ box-shadow:0 0 15px var(--electric-blue); } 
-      100%{ box-shadow:0 0 30px var(--electric-blue),0 0 10px #fff; } 
+      0%{ box-shadow:0 0 15px var(--electric-red); } 
+      100%{ box-shadow:0 0 30px var(--electric-red),0 0 10px #fff; } 
     }
     /* Layout & grids */
     .grades-grid, .role-column, .immat-full-grid, .vehicles-grid, .tenues-container { width:100%; max-width:1200px; }
@@ -186,7 +186,7 @@
     .grade-title { font-size:1.25rem; font-weight:700; color:var(--white); text-transform:uppercase; text-align:center; width:100%; }
     .members-list { display:flex; flex-wrap:wrap; gap:.3rem; justify-content:center; width:100%; }
     .member-item { display:flex; align-items:center; gap:.2rem; font-size:.9rem; color:#aaa; background:rgba(255,255,255,0.1); padding:.2rem .4rem; border-radius:4px; cursor:pointer; }
-    .member-item:hover { background:rgba(0,255,255,0.2); color:var(--electric-blue); }
+    .member-item:hover { background:rgba(0,255,255,0.2); color:var(--electric-red); }
     .immat-badge { display:inline-block; background:var(--white); color:var(--black); font-weight:bold; padding:.1rem .3rem; border-radius:3px; font-size:.8rem; }
     /* role / immat / vehicles / tenues (kept) */
     .roles-section { display:flex; flex-direction:column; gap:2rem; margin-top:2.5rem; }
@@ -240,9 +240,9 @@
       backdrop-filter:blur(8px); justify-content:center; align-items:center; 
     }
     .modal-content { 
-      background:var(--gray); border:2px solid var(--electric-blue); 
+      background:var(--gray); border:2px solid var(--electric-red); 
       border-radius:16px; padding:2rem; width:90%; max-width:500px; 
-      box-shadow:0 0 30px var(--electric-blue); position:relative; 
+      box-shadow:0 0 30px var(--electric-red); position:relative; 
       animation:modalPop .4s cubic-bezier(.175,.885,.32,1.275); 
     }
     @keyframes modalPop { 
@@ -253,7 +253,7 @@
       position:absolute; top:15px; right:20px; font-size:1.8rem; 
       color:#fff; cursor:pointer; transition: color .3s, transform .2s; 
     }
-    .close-btn:hover { color:var(--electric-blue); transform:rotate(90deg); }
+    .close-btn:hover { color:var(--electric-red); transform:rotate(90deg); }
 
     /* ===== QUOTA MODAL — BASE ===== */
     .quota-modal { 
@@ -263,12 +263,12 @@
     }
     .quota-modal-content {
       background: var(--gray);
-      border: 2px solid var(--electric-blue);
+      border: 2px solid var(--electric-red);
       border-radius: 16px;
       width: 90%;
       max-width: 700px;
       padding: 2rem;
-      box-shadow: 0 0 30px var(--electric-blue);
+      box-shadow: 0 0 30px var(--electric-red);
       position: relative;
       /* ✅ ANIMATION FLUIDE AVEC max-height */
       transition: max-height 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
@@ -405,7 +405,7 @@
     .quota-cat-btn {
       background: #000;
       color: white;
-      border: 2px solid var(--electric-blue);
+      border: 2px solid var(--electric-red);
       border-radius: 8px;
       padding: 10px 8px;
       font-size: 0.95rem;
@@ -442,7 +442,7 @@
     .quota-modal h3 {
       text-align: center;
       margin-bottom: 1.5rem;
-      color: var(--electric-blue);
+      color: var(--electric-red);
       font-size: 1.8rem;
     }
     .close-quota {
@@ -540,7 +540,7 @@
     }
     .quota-entry { 
       padding: 12px; background: rgba(255,255,255,0.03); 
-      border-left: 3px solid var(--electric-blue); border-radius: 8px; 
+      border-left: 3px solid var(--electric-red); border-radius: 8px; 
       color: #e9eef0; 
     }
     .quota-entry small { 
@@ -549,7 +549,7 @@
     .quota-list::-webkit-scrollbar { width: 12px; }
     .quota-list::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); border-radius: 8px; }
     .quota-list::-webkit-scrollbar-thumb { background: rgba(0,255,255,0.12); border-radius: 8px; }
-    .quota-entry strong { color: var(--electric-blue); }
+    .quota-entry strong { color: var(--electric-red); }
 
     /* ===== Responsive ===== */
     @media (max-width: 600px) {
@@ -1637,7 +1637,7 @@
 
           try {
             showToast('📤 Upload de la preuve...', { type: 'info', duration: 1500 });
-            const imgbbRes = await fetch('https://api.imgbb.com/1/upload?key=7b7b6e5d7d3e3f2c3c4d5e6f7g8h9i0j', {
+            const imgbbRes = await fetch('https://api.imgbb.com/1/upload?key=6a81febbf685629c844e38f5e11afe6d', {
               method: 'POST',
               body: formData
             });
